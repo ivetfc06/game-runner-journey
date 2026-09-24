@@ -133,9 +133,11 @@ export type Database = {
           id: string
           last_run_date: string | null
           streak: number
+          streak_freezes: number
           total_km: number
           username: string
           xp: number
+          xp_boost_runs: number
         }
         Insert: {
           coins?: number
@@ -144,9 +146,11 @@ export type Database = {
           id: string
           last_run_date?: string | null
           streak?: number
+          streak_freezes?: number
           total_km?: number
           username: string
           xp?: number
+          xp_boost_runs?: number
         }
         Update: {
           coins?: number
@@ -155,9 +159,11 @@ export type Database = {
           id?: string
           last_run_date?: string | null
           streak?: number
+          streak_freezes?: number
           total_km?: number
           username?: string
           xp?: number
+          xp_boost_runs?: number
         }
         Relationships: []
       }
@@ -288,6 +294,7 @@ export type Database = {
     }
     Functions: {
       are_friends: { Args: { a: string; b: string }; Returns: boolean }
+      buy_item: { Args: { _item: string }; Returns: Json }
       claim_chest: {
         Args: { _chest: string; _lat: number; _lng: number }
         Returns: Json
