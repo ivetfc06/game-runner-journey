@@ -1,4 +1,4 @@
-import { Pause, Play, Satellite, FlaskConical } from "lucide-react";
+import { Pause, Play, Satellite } from "lucide-react";
 import { formatPace, formatTime, type useRunTracker } from "@/lib/game";
 
 type Tracker = ReturnType<typeof useRunTracker>;
@@ -45,13 +45,12 @@ export function RunPanel({
           </span>
           <span className="font-display text-2xl text-foreground">{finishLabel}</span>
           <span className="text-xs text-muted-foreground">
-            {t.mode === "gps" ? "GPS activo · mantén la app abierta" : "Simulación (x10 velocidad)"}
+            GPS activo · mantén la app abierta
           </span>
         </button>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
-          <button
-            onClick={() => t.start("gps")}
+        <button
+            onClick={() => t.start()}
             className="flex flex-col items-center gap-1 rounded-3xl border border-primary/40 bg-primary/10 py-6 card-glow"
           >
             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
@@ -59,16 +58,6 @@ export function RunPanel({
             </span>
             <span className="font-display text-xl text-foreground">Correr con GPS</span>
           </button>
-          <button
-            onClick={() => t.start("sim")}
-            className="flex flex-col items-center gap-1 rounded-3xl border border-border bg-card py-6"
-          >
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary text-foreground">
-              <FlaskConical className="h-6 w-6" />
-            </span>
-            <span className="font-display text-xl text-foreground">Simulación</span>
-          </button>
-        </div>
       )}
       {!t.running && (
         <p className="flex items-center justify-center gap-1 text-center text-[11px] text-muted-foreground">

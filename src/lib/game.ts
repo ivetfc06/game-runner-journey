@@ -120,7 +120,7 @@ export type Pos = { lat: number; lng: number };
 /** Tracks a run either with real GPS or a simulated pace (~5'/km, accelerated x10). */
 export function useRunTracker() {
   const [running, setRunning] = useState(false);
-  const [mode, setMode] = useState<"gps" | "sim">("gps");
+  const mode = "gps" as const;
   const [km, setKm] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [elev, setElev] = useState(0);
@@ -148,20 +148,10 @@ export function useRunTracker() {
   }, []);
 
   const start = useCallback(
-    (m: "gps" | "sim") => {
+    () => {
       reset();
-      setMode(m);
       setGpsError(null);
       setRunning(true);
-      if (m === "sim") {
-        // 1 real second = 10 simulated seconds at 5:00/km
-        timerRef.current = setInterval(() => {
-          setSeconds((s) => s + 10);
-          setKm((k) => Math.round((k + 10 / 300) * 1000) / 1000);
-          setElev((e) => e + Math.random() * 3);
-        }, 1000);
-        return;
-      }
       if (!("geolocation" in navigator)) {
         setGpsError("Tu dispositivo no permite ubicación");
         setRunning(false);
