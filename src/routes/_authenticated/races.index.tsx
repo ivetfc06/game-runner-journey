@@ -12,21 +12,21 @@ import { useFriends } from "./friends";
 export const Route = createFileRoute("/_authenticated/races/")({
   head: () => ({
     meta: [
-      { title: "Retos — RunQuest" },
-      { name: "description", content: "Reta a tus amigos en directo o a distancia y apuesta monedas." },
-      { property: "og:title", content: "Retos — RunQuest" },
-      { property: "og:description", content: "Reta a tus amigos en directo o a distancia y apuesta monedas." },
+      { title: "Challenges — RunQuest" },
+      { name: "description", content: "Challenge your friends live or remotely and wager coins." },
+      { property: "og:title", content: "Challenges — RunQuest" },
+      { property: "og:description", content: "Challenge your friends live or remotely and wager coins." },
     ],
   }),
   component: RacesPage,
 });
 
 const STATUS: Record<string, string> = {
-  pending: "Pendiente",
-  active: "En curso",
-  finished: "Terminado",
-  cancelled: "Cancelado",
-  expired: "Caducado",
+  pending: "Pending",
+  active: "In progress",
+  finished: "Finished",
+  cancelled: "Cancelled",
+  expired: "Expired",
 };
 
 function RacesPage() {
@@ -52,12 +52,12 @@ function RacesPage() {
   const names = new Map(fl.filter((f) => f.other).map((f) => [f.other.id, f.other.display_name]));
 
   const create = async () => {
-    if (!opp) { toast.error("Elige un amigo"); return; }
+    if (!opp) { toast.error("Choose a friend"); return; }
     const { data, error } = await supabase.rpc("create_race", {
       _opponent: opp, _mode: mode, _distance: dist, _stake: stake, _hours: hours,
     });
     if (error) { toast.error(errMsg(error)); return; }
-    toast.success("¡Reto enviado!");
+    toast.success("Challenge sent!");
     qc.invalidateQueries();
     navigate({ to: "/races/$id", params: { id: data as string } });
   };
@@ -70,19 +70,19 @@ function RacesPage() {
 
   return (
     <AppShell>
-      <h2 className="font-display text-3xl tracking-wide text-foreground">Retos</h2>
+      <h2 className="font-display text-3xl tracking-wide text-foreground">Challenges</h2>
       <section className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
-        <h3 className="font-display text-xl text-foreground">Nuevo reto</h3>
+        <h3 className="font-display text-xl text-foreground">New challenge</h3>
         {friends.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Añade amigos primero para poder retarlos.</p>
+          <p className="text-sm text-muted-foreground">Add friends before challenging them.</p>
         ) : (
           <>
             <div className="flex flex-wrap gap-2">
               {friends.map((f) => <Chip key={f.id} on={opp === f.id} onClick={() => setOpp(f.id)}>{f.display_name}</Chip>)}
             </div>
             <div className="flex gap-2">
-              <Chip on={mode === "async"} onClick={() => setMode("async")}>A distancia</Chip>
-              <Chip on={mode === "live"} onClick={() => setMode("live")}>En directo</Chip>
+              <Chip on={mode === "async"} onClick={() => setMode("async")}>Remote</Chip>
+              <Chip on={mode === "live"} onClick={() => setMode("live")}>Live</Chip>
             </div>
             <div className="flex gap-2">
               {[1, 3, 5, 10].map((d) => <Chip key={d} on={dist === d} onClick={() => setDist(d)}>{d} km</Chip>)}
@@ -93,11 +93,11 @@ function RacesPage() {
               </div>
             )}
             <label className="text-sm text-muted-foreground">
-              Apuesta en monedas (opcional; el ganador se lo lleva todo)
+              Coin stake (optional; winner takes all)
               <Input type="number" min={0} value={stake} onChange={(e) => setStake(Math.max(0, Number(e.target.value) || 0))} />
             </label>
-            <p className="text-xs text-muted-foreground">Premio al ganador: +100 monedas y +250 XP, además del bote.</p>
-            <Button onClick={create} className="font-display text-lg">Enviar reto</Button>
+            <p className="text-xs text-muted-foreground">Winner reward: +100 coins and +250 XP, plus the pot.</p>
+            <Button onClick={create} className="font-display text-lg">Send challenge</Button>
           </>
         )}
       </section>
@@ -108,13 +108,13 @@ function RacesPage() {
             <li key={r.id}>
               <Link to="/races/$id" params={{ id: r.id }} className="flex items-center justify-between rounded-2xl border border-border bg-card p-3">
                 <div>
-                  <p className="font-semibold text-foreground">vs {names.get(other) ?? "Amigo"}</p>
+                  <p className="font-semibold text-foreground">vs {names.get(other) ?? "Friend"}</p>
                   <p className="text-xs text-muted-foreground">
-                    {r.mode === "live" ? "En directo" : "A distancia"} · {Number(r.distance_km)} km · bote {r.stake * 2}
+                    {r.mode === "live" ? "Live" : "Remote"} · {Number(r.distance_km)} km · pot {r.stake * 2}
                   </p>
                 </div>
                 <span className={`text-xs font-bold ${r.winner === user?.id ? "text-primary" : "text-muted-foreground"}`}>
-                  {r.status === "finished" ? (r.winner === user?.id ? "¡Ganaste!" : r.winner ? "Perdiste" : "Empate") : STATUS[r.status]}
+                  {r.status === "finished" ? (r.winner === user?.id ? "You won!" : r.winner ? "You lost" : "Draw") : STATUS[r.status]}
                 </span>
               </Link>
             </li>

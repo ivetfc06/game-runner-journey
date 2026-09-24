@@ -12,10 +12,10 @@ import { errMsg, formatTime, useRunTracker, useUser } from "@/lib/game";
 export const Route = createFileRoute("/_authenticated/races/$id")({
   head: () => ({
     meta: [
-      { title: "Reto — RunQuest" },
-      { name: "description", content: "Detalle y carrera del reto contra tu amigo." },
-      { property: "og:title", content: "Reto — RunQuest" },
-      { property: "og:description", content: "Detalle y carrera del reto contra tu amigo." },
+      { title: "Challenge — RunQuest" },
+      { name: "description", content: "Challenge details and race against your friend." },
+      { property: "og:title", content: "Challenge — RunQuest" },
+      { property: "og:description", content: "Challenge details and race against your friend." },
     ],
   }),
   component: RacePage,
@@ -72,13 +72,13 @@ function RacePage() {
       .rpc("update_race_progress", { _race: id, _km: Math.min(t.km, target), _seconds: t.seconds })
       .then(({ error }) => {
         if (error) toast.error(errMsg(error));
-        else if (done) toast.success("¡Distancia completada!");
+        else if (done) toast.success("Distance complete!");
         qc.invalidateQueries({ queryKey: ["race", id] });
         qc.invalidateQueries({ queryKey: ["profile"] });
       });
   }, [t.km, t.running, race, target, id, t, qc]);
 
-  if (!race) return <AppShell><p className="text-muted-foreground">Cargando…</p></AppShell>;
+  if (!race) return <AppShell><p className="text-muted-foreground">Loading…</p></AppShell>;
 
   const me = user?.id;
   const mine = data!.prog.find((p) => p.user_id === me);
@@ -92,14 +92,14 @@ function RacePage() {
     <AppShell>
       <div>
         <p className="text-xs uppercase tracking-widest text-muted-foreground">
-          {race.mode === "live" ? "Carrera en directo" : "Reto a distancia"} · {target} km
+          {race.mode === "live" ? "Live race" : "Remote challenge"} · {target} km
         </p>
         <h2 className="font-display text-3xl text-foreground">
           {data!.names.get(race.creator)} vs {data!.names.get(race.opponent)}
         </h2>
         <p className="text-sm text-muted-foreground">
-          Bote: {race.stake * 2} monedas · Premio extra: +100 monedas y +250 XP
-          {race.deadline && race.status !== "finished" && ` · Termina ${new Date(race.deadline).toLocaleString("es-ES")}`}
+          Pot: {race.stake * 2} coins · Bonus: +100 coins y +250 XP
+          {race.deadline && race.status !== "finished" && ` · Ends ${new Date(race.deadline).toLocaleString("en-GB")}`}
         </p>
       </div>
 
@@ -110,7 +110,7 @@ function RacePage() {
           return (
             <div key={uid}>
               <div className="flex justify-between text-sm">
-                <span className="font-semibold text-foreground">{uid === me ? "Tú" : data!.names.get(uid)}</span>
+                <span className="font-semibold text-foreground">{uid === me ? "You" : data!.names.get(uid)}</span>
                 <span className="text-muted-foreground">
                   {p?.time_seconds ? `🏁 ${formatTime(p.time_seconds)}` : `${km.toFixed(2)} km`}
                 </span>
@@ -126,30 +126,30 @@ function RacePage() {
       {race.status === "pending" && (
         race.opponent === me ? (
           <div className="flex gap-2">
-            <Button className="flex-1" onClick={() => respond(true)}>Aceptar{race.stake ? ` (pones ${race.stake})` : ""}</Button>
-            <Button variant="secondary" onClick={() => respond(false)}>Rechazar</Button>
+            <Button className="flex-1" onClick={() => respond(true)}>Accept{race.stake ? ` (stake ${race.stake})` : ""}</Button>
+            <Button variant="secondary" onClick={() => respond(false)}>Decline</Button>
           </div>
         ) : (
           <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">Esperando a que tu amigo acepte…</p>
-            <Button variant="ghost" onClick={() => respond(false)}>Cancelar</Button>
+            <p className="text-sm text-muted-foreground">Waiting for your friend to accept…</p>
+            <Button variant="ghost" onClick={() => respond(false)}>Cancel</Button>
           </div>
         )
       )}
 
       {race.status === "active" && !mine?.finished_at && (
-        <RunPanel t={t} target={target} onFinish={() => t.stop()} finishLabel="Pausar" />
+        <RunPanel t={t} target={target} onFinish={() => t.stop()} finishLabel="Pause" />
       )}
       {race.status === "active" && mine?.finished_at && (
-        <p className="text-center text-sm text-muted-foreground">Has terminado. Esperando a tu amigo…</p>
+        <p className="text-center text-sm text-muted-foreground">You have finished. Waiting for your friend…</p>
       )}
       {race.status === "finished" && (
         <p className="rounded-2xl bg-secondary p-4 text-center font-display text-2xl text-foreground">
-          {race.winner === me ? `🏆 ¡Ganaste! +${race.stake * 2 + 100} monedas` : race.winner ? "Esta vez ganó tu amigo" : "Empate · apuestas devueltas"}
+          {race.winner === me ? `🏆 You won! +${race.stake * 2 + 100} coins` : race.winner ? "Your friend won this time" : "Draw · stakes returned"}
         </p>
       )}
       {(race.status === "cancelled" || race.status === "expired") && (
-        <p className="text-center text-sm text-muted-foreground">Reto {race.status === "expired" ? "caducado" : "cancelado"}. Monedas devueltas.</p>
+        <p className="text-center text-sm text-muted-foreground">Challenge {race.status === "expired" ? "expired" : "cancelled"}. Coins returned.</p>
       )}
     </AppShell>
   );
