@@ -152,6 +152,7 @@ export type Database = {
       profiles: {
         Row: {
           best_weekly_streak: number
+          coin_boost_runs: number
           coins: number
           created_at: string
           display_name: string
@@ -163,6 +164,7 @@ export type Database = {
           last_done_week: string | null
           last_run_date: string | null
           last_run_finished_at: string | null
+          magnet_runs: number
           speed_streak: number
           speed_target_km: number
           speed_target_pace: number
@@ -180,6 +182,7 @@ export type Database = {
         }
         Insert: {
           best_weekly_streak?: number
+          coin_boost_runs?: number
           coins?: number
           created_at?: string
           display_name: string
@@ -191,6 +194,7 @@ export type Database = {
           last_done_week?: string | null
           last_run_date?: string | null
           last_run_finished_at?: string | null
+          magnet_runs?: number
           speed_streak?: number
           speed_target_km?: number
           speed_target_pace?: number
@@ -208,6 +212,7 @@ export type Database = {
         }
         Update: {
           best_weekly_streak?: number
+          coin_boost_runs?: number
           coins?: number
           created_at?: string
           display_name?: string
@@ -219,6 +224,7 @@ export type Database = {
           last_done_week?: string | null
           last_run_date?: string | null
           last_run_finished_at?: string | null
+          magnet_runs?: number
           speed_streak?: number
           speed_target_km?: number
           speed_target_pace?: number
@@ -430,6 +436,10 @@ export type Database = {
       settle_race: {
         Args: { _race: string; _winner: string }
         Returns: undefined
+      }
+      spawn_nearby_chests: {
+        Args: { _lat: number; _lng: number }
+        Returns: number
       }
       sync_missions: { Args: never; Returns: Json }
       track_week: { Args: never; Returns: Json }
