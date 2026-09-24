@@ -16,6 +16,7 @@ import { Route as AuthenticatedFriendsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedMapRouteImport } from './routes/_authenticated/map'
 import { Route as AuthenticatedRunRouteImport } from './routes/_authenticated/run'
+import { Route as AuthenticatedShopRouteImport } from './routes/_authenticated/shop'
 import { Route as AuthenticatedAdminChestsRouteImport } from './routes/_authenticated/admin.chests'
 import { Route as AuthenticatedRacesIndexRouteImport } from './routes/_authenticated/races.index'
 import { Route as AuthenticatedRacesIdRouteImport } from './routes/_authenticated/races.$id'
@@ -54,6 +55,11 @@ const AuthenticatedRunRoute = AuthenticatedRunRouteImport.update({
   path: '/run',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedShopRoute = AuthenticatedShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAdminChestsRoute =
   AuthenticatedAdminChestsRouteImport.update({
     id: '/admin/chests',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof AuthenticatedHomeRoute
   '/map': typeof AuthenticatedMapRoute
   '/run': typeof AuthenticatedRunRoute
+  '/shop': typeof AuthenticatedShopRoute
   '/admin/chests': typeof AuthenticatedAdminChestsRoute
   '/races/$id': typeof AuthenticatedRacesIdRoute
   '/races/': typeof AuthenticatedRacesIndexRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/home': typeof AuthenticatedHomeRoute
   '/map': typeof AuthenticatedMapRoute
   '/run': typeof AuthenticatedRunRoute
+  '/shop': typeof AuthenticatedShopRoute
   '/admin/chests': typeof AuthenticatedAdminChestsRoute
   '/races/$id': typeof AuthenticatedRacesIdRoute
   '/races': typeof AuthenticatedRacesIndexRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/map': typeof AuthenticatedMapRoute
   '/_authenticated/run': typeof AuthenticatedRunRoute
+  '/_authenticated/shop': typeof AuthenticatedShopRoute
   '/_authenticated/admin/chests': typeof AuthenticatedAdminChestsRoute
   '/_authenticated/races/$id': typeof AuthenticatedRacesIdRoute
   '/_authenticated/races/': typeof AuthenticatedRacesIndexRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/map'
     | '/run'
+    | '/shop'
     | '/admin/chests'
     | '/races/$id'
     | '/races/'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/map'
     | '/run'
+    | '/shop'
     | '/admin/chests'
     | '/races/$id'
     | '/races'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/_authenticated/home'
     | '/_authenticated/map'
     | '/_authenticated/run'
+    | '/_authenticated/shop'
     | '/_authenticated/admin/chests'
     | '/_authenticated/races/$id'
     | '/_authenticated/races/'
@@ -200,6 +212,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRunRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/shop': {
+      id: '/_authenticated/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof AuthenticatedShopRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/chests': {
       id: '/_authenticated/admin/chests'
       path: '/admin/chests'
@@ -229,6 +248,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedMapRoute: typeof AuthenticatedMapRoute
   AuthenticatedRunRoute: typeof AuthenticatedRunRoute
+  AuthenticatedShopRoute: typeof AuthenticatedShopRoute
   AuthenticatedAdminChestsRoute: typeof AuthenticatedAdminChestsRoute
   AuthenticatedRacesIdRoute: typeof AuthenticatedRacesIdRoute
   AuthenticatedRacesIndexRoute: typeof AuthenticatedRacesIndexRoute
@@ -239,6 +259,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedMapRoute: AuthenticatedMapRoute,
   AuthenticatedRunRoute: AuthenticatedRunRoute,
+  AuthenticatedShopRoute: AuthenticatedShopRoute,
   AuthenticatedAdminChestsRoute: AuthenticatedAdminChestsRoute,
   AuthenticatedRacesIdRoute: AuthenticatedRacesIdRoute,
   AuthenticatedRacesIndexRoute: AuthenticatedRacesIndexRoute,

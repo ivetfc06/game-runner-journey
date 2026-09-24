@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { Coins, Flame, Home, Map, Play, Swords, Users, LogOut } from "lucide-react";
+import { Coins, Flame, Home, Map, ShoppingBag, Play, Swords, Users, LogOut } from "lucide-react";
 import type { ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { initials, useProfile } from "@/lib/game";
@@ -11,6 +11,7 @@ const NAV = [
   { to: "/map", label: "Cofres", icon: Map },
   { to: "/races", label: "Retos", icon: Swords },
   { to: "/friends", label: "Amigos", icon: Users },
+  { to: "/shop", label: "Tienda", icon: ShoppingBag },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {

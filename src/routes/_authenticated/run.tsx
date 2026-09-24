@@ -37,8 +37,9 @@ function RunPage() {
       toast.error(errMsg(error));
       return;
     }
-    const r = data as { xp: number; coins: number };
-    toast.success(`¡Carrera completada! +${r.xp} XP · +${r.coins} monedas`);
+    const r = data as { xp: number; coins: number; freezes_used: number; boosted: boolean };
+    toast.success(`¡Carrera completada! +${r.xp} XP${r.boosted ? " (x2)" : ""} · +${r.coins} monedas`);
+    if (r.freezes_used > 0) toast(`🛡️ Usaste ${r.freezes_used} protector(es) y tu racha sigue viva`);
     qc.invalidateQueries({ queryKey: ["profile"] });
     t.reset();
   };
