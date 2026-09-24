@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Check, Footprints, Gift, Map, Play, Route as RouteIcon, Sunrise, Swords, Target, Trophy, Zap } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { supabase } from "@/integrations/supabase/client";
+import { StreakHud } from "@/components/StreakHud";
 import { levelOf, levelProgress, useIsAdmin, useMissions, useProfile, XP_PER_LEVEL } from "@/lib/game";
 
 const MISSION_ICON: Record<string, typeof Sunrise> = {
@@ -87,6 +88,8 @@ function HomePage() {
           </div>
         ))}
       </section>
+
+      {p && <StreakHud p={p} />}
 
       <section className="rounded-2xl border border-border bg-card p-4">
         <div className="mb-3 flex items-center gap-2">
