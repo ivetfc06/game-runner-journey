@@ -154,9 +154,16 @@ export type Database = {
           coins: number
           created_at: string
           display_name: string
+          dist_streak: number
+          dist_target: number
+          elev_streak: number
+          elev_target: number
           id: string
           last_run_date: string | null
           last_run_finished_at: string | null
+          speed_streak: number
+          speed_target_km: number
+          speed_target_pace: number
           streak: number
           streak_freezes: number
           today_km: number
@@ -170,9 +177,16 @@ export type Database = {
           coins?: number
           created_at?: string
           display_name: string
+          dist_streak?: number
+          dist_target?: number
+          elev_streak?: number
+          elev_target?: number
           id: string
           last_run_date?: string | null
           last_run_finished_at?: string | null
+          speed_streak?: number
+          speed_target_km?: number
+          speed_target_pace?: number
           streak?: number
           streak_freezes?: number
           today_km?: number
@@ -186,9 +200,16 @@ export type Database = {
           coins?: number
           created_at?: string
           display_name?: string
+          dist_streak?: number
+          dist_target?: number
+          elev_streak?: number
+          elev_target?: number
           id?: string
           last_run_date?: string | null
           last_run_finished_at?: string | null
+          speed_streak?: number
+          speed_target_km?: number
+          speed_target_pace?: number
           streak?: number
           streak_freezes?: number
           today_km?: number
@@ -398,6 +419,10 @@ export type Database = {
       sync_missions: { Args: never; Returns: Json }
       update_race_progress: {
         Args: { _km: number; _race: string; _seconds: number }
+        Returns: Json
+      }
+      update_streaks: {
+        Args: { _elev: number; _km: number; _seconds: number }
         Returns: Json
       }
     }

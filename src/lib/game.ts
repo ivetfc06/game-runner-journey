@@ -123,6 +123,8 @@ export function useRunTracker() {
   const [mode, setMode] = useState<"gps" | "sim">("gps");
   const [km, setKm] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  const [elev, setElev] = useState(0);
+  const altRef = useRef<number | null>(null);
   const [pos, setPos] = useState<Pos | null>(null);
   const [gpsError, setGpsError] = useState<string | null>(null);
   const watchRef = useRef<number | null>(null);
@@ -140,6 +142,8 @@ export function useRunTracker() {
   const reset = useCallback(() => {
     setKm(0);
     setSeconds(0);
+    setElev(0);
+    altRef.current = null;
     lastRef.current = null;
   }, []);
 
@@ -154,6 +158,7 @@ export function useRunTracker() {
         timerRef.current = setInterval(() => {
           setSeconds((s) => s + 10);
           setKm((k) => Math.round((k + 10 / 300) * 1000) / 1000);
+          setElev((e) => e + Math.random() * 3);
         }, 1000);
         return;
       }
@@ -168,6 +173,12 @@ export function useRunTracker() {
           const next = { lat: p.coords.latitude, lng: p.coords.longitude };
           setPos(next);
           if (p.coords.accuracy > 35) return;
+          const alt = p.coords.altitude;
+          if (alt != null) {
+            const gain = altRef.current != null ? alt - altRef.current : 0;
+            if (gain > 1) setElev((e) => e + gain);
+            if (altRef.current == null || Math.abs(gain) > 1) altRef.current = alt;
+          }
           if (lastRef.current) {
             const d = haversine(lastRef.current, next);
             if (d > 2 && d < 100) setKm((k) => k + d / 1000);
@@ -183,5 +194,5 @@ export function useRunTracker() {
 
   useEffect(() => stop, [stop]);
 
-  return { running, mode, km, seconds, pos, gpsError, start, stop, reset };
+  return { running, mode, km, seconds, elev, pos, gpsError, start, stop, reset };
 }

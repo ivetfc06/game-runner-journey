@@ -45,6 +45,7 @@ export function useAutoClaim(pos: Pos | null, enabled: boolean) {
           const r = data as { coins: number; xp: number; name: string };
           toast.success(`🎁 ¡Cofre abierto: ${r.name}! +${r.coins} monedas · +${r.xp} XP`);
           qc.invalidateQueries({ queryKey: ["chests"] });
+          qc.invalidateQueries({ queryKey: ["inventory"] });
           qc.invalidateQueries({ queryKey: ["profile"] });
           void syncMissions(qc);
         });
@@ -53,3 +54,20 @@ export function useAutoClaim(pos: Pos | null, enabled: boolean) {
 }
 
 export const RARITY_LABEL: Record<string, string> = { bronze: "Bronce", silver: "Plata", gold: "Oro" };
+
+export function useInventory() {
+  const { data: user } = useUser();
+  return useQuery({
+    queryKey: ["inventory", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("chest_claims")
+        .select("id, claimed_at, chests(name, rarity, coins, xp)")
+        .order("claimed_at", { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}

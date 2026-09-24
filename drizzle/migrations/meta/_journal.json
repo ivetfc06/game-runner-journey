@@ -15,6 +15,13 @@
       "when": 1790259238769,
       "tag": "0001_shop",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790260186511,
+      "tag": "0002_triple_streaks",
+      "breakpoints": true
     }
   ]
 }
