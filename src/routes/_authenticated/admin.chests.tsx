@@ -36,10 +36,10 @@ function AdminChests() {
   if (!isAdmin) return <AppShell><p className="text-muted-foreground">Solo los administradores pueden gestionar cofres.</p></AppShell>;
 
   const add = async () => {
-    if (!name || !pt) return toast.error("Pon un nombre y toca el mapa");
+    if (!name || !pt) { toast.error("Pon un nombre y toca el mapa"); return; }
     const [coins, xp] = REWARD[rarity];
     const { error } = await supabase.from("chests").insert({ name, lat: pt.lat, lng: pt.lng, rarity, coins, xp });
-    if (error) return toast.error(errMsg(error));
+    if (error) { toast.error(errMsg(error)); return; }
     setName("");
     setPt(null);
     qc.invalidateQueries({ queryKey: ["chests"] });

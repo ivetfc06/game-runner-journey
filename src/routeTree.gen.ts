@@ -12,9 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedFriendsRouteImport } from './routes/_authenticated/friends'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedMapRouteImport } from './routes/_authenticated/map'
 import { Route as AuthenticatedRunRouteImport } from './routes/_authenticated/run'
+import { Route as AuthenticatedAdminChestsRouteImport } from './routes/_authenticated/admin.chests'
+import { Route as AuthenticatedRacesIndexRouteImport } from './routes/_authenticated/races.index'
+import { Route as AuthenticatedRacesIdRouteImport } from './routes/_authenticated/races.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -29,6 +33,11 @@ const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedFriendsRoute = AuthenticatedFriendsRouteImport.update({
+  id: '/friends',
+  path: '/friends',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
@@ -45,43 +54,93 @@ const AuthenticatedRunRoute = AuthenticatedRunRouteImport.update({
   path: '/run',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminChestsRoute =
+  AuthenticatedAdminChestsRouteImport.update({
+    id: '/admin/chests',
+    path: '/admin/chests',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRacesIndexRoute = AuthenticatedRacesIndexRouteImport.update({
+  id: '/races/',
+  path: '/races/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRacesIdRoute = AuthenticatedRacesIdRouteImport.update({
+  id: '/races/$id',
+  path: '/races/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/friends': typeof AuthenticatedFriendsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/map': typeof AuthenticatedMapRoute
   '/run': typeof AuthenticatedRunRoute
+  '/admin/chests': typeof AuthenticatedAdminChestsRoute
+  '/races/$id': typeof AuthenticatedRacesIdRoute
+  '/races/': typeof AuthenticatedRacesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/friends': typeof AuthenticatedFriendsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/map': typeof AuthenticatedMapRoute
   '/run': typeof AuthenticatedRunRoute
+  '/admin/chests': typeof AuthenticatedAdminChestsRoute
+  '/races/$id': typeof AuthenticatedRacesIdRoute
+  '/races': typeof AuthenticatedRacesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/friends': typeof AuthenticatedFriendsRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/map': typeof AuthenticatedMapRoute
   '/_authenticated/run': typeof AuthenticatedRunRoute
+  '/_authenticated/admin/chests': typeof AuthenticatedAdminChestsRoute
+  '/_authenticated/races/$id': typeof AuthenticatedRacesIdRoute
+  '/_authenticated/races/': typeof AuthenticatedRacesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/home' | '/map' | '/run'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/friends'
+    | '/home'
+    | '/map'
+    | '/run'
+    | '/admin/chests'
+    | '/races/$id'
+    | '/races/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/home' | '/map' | '/run'
+  to:
+    | '/'
+    | '/auth'
+    | '/friends'
+    | '/home'
+    | '/map'
+    | '/run'
+    | '/admin/chests'
+    | '/races/$id'
+    | '/races'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/friends'
     | '/_authenticated/home'
     | '/_authenticated/map'
     | '/_authenticated/run'
+    | '/_authenticated/admin/chests'
+    | '/_authenticated/races/$id'
+    | '/_authenticated/races/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -113,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/friends': {
+      id: '/_authenticated/friends'
+      path: '/friends'
+      fullPath: '/friends'
+      preLoaderRoute: typeof AuthenticatedFriendsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/home': {
       id: '/_authenticated/home'
       path: '/home'
@@ -134,19 +200,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRunRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/chests': {
+      id: '/_authenticated/admin/chests'
+      path: '/admin/chests'
+      fullPath: '/admin/chests'
+      preLoaderRoute: typeof AuthenticatedAdminChestsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/races/': {
+      id: '/_authenticated/races/'
+      path: '/races'
+      fullPath: '/races/'
+      preLoaderRoute: typeof AuthenticatedRacesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/races/$id': {
+      id: '/_authenticated/races/$id'
+      path: '/races/$id'
+      fullPath: '/races/$id'
+      preLoaderRoute: typeof AuthenticatedRacesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedFriendsRoute: typeof AuthenticatedFriendsRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedMapRoute: typeof AuthenticatedMapRoute
   AuthenticatedRunRoute: typeof AuthenticatedRunRoute
+  AuthenticatedAdminChestsRoute: typeof AuthenticatedAdminChestsRoute
+  AuthenticatedRacesIdRoute: typeof AuthenticatedRacesIdRoute
+  AuthenticatedRacesIndexRoute: typeof AuthenticatedRacesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedFriendsRoute: AuthenticatedFriendsRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedMapRoute: AuthenticatedMapRoute,
   AuthenticatedRunRoute: AuthenticatedRunRoute,
+  AuthenticatedAdminChestsRoute: AuthenticatedAdminChestsRoute,
+  AuthenticatedRacesIdRoute: AuthenticatedRacesIdRoute,
+  AuthenticatedRacesIndexRoute: AuthenticatedRacesIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

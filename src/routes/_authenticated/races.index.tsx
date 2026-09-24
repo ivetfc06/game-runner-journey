@@ -52,11 +52,11 @@ function RacesPage() {
   const names = new Map(fl.filter((f) => f.other).map((f) => [f.other.id, f.other.display_name]));
 
   const create = async () => {
-    if (!opp) return toast.error("Elige un amigo");
+    if (!opp) { toast.error("Elige un amigo"); return; }
     const { data, error } = await supabase.rpc("create_race", {
       _opponent: opp, _mode: mode, _distance: dist, _stake: stake, _hours: hours,
     });
-    if (error) return toast.error(errMsg(error));
+    if (error) { toast.error(errMsg(error)); return; }
     toast.success("¡Reto enviado!");
     qc.invalidateQueries();
     navigate({ to: "/races/$id", params: { id: data as string } });
