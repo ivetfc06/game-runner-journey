@@ -11,10 +11,12 @@ import { errMsg, initials, levelOf, useUser } from "@/lib/game";
 export const Route = createFileRoute("/_authenticated/friends")({
   head: () => ({
     meta: [
-      { title: "Amigos — RunQuest" },
-      { name: "description", content: "Añade amigos corredores y compite en el ranking." },
-      { property: "og:title", content: "Amigos — RunQuest" },
-      { property: "og:description", content: "Añade amigos corredores y compite en el ranking." },
+      { title: "Friends — RunQuest" },
+      { name: "description", content: "Add fellow runners and compete in the rankings." },
+      { property: "og:title", content: "Friends — RunQuest" },
+      { property: "og:description", content: "Add fellow runners and compete in the rankings." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: FriendsPage,
@@ -65,8 +67,8 @@ function FriendsPage() {
   };
   const add = async (id: string) => {
     const { error } = await supabase.from("friendships").insert({ requester: user!.id, addressee: id });
-    if (error) toast.error(error.code === "23505" ? "Ya existe una solicitud" : errMsg(error));
-    else toast.success("Solicitud enviada");
+    if (error) toast.error(error.code === "23505" ? "A request already exists" : errMsg(error));
+    else toast.success("Request sent");
     refresh();
   };
   const accept = async (id: string) => {
@@ -91,7 +93,7 @@ function FriendsPage() {
       <div className="min-w-0 flex-1">
         <p className="truncate font-semibold text-foreground">{p.display_name}</p>
         <p className="text-xs text-muted-foreground">
-          @{p.username} · Nivel {levelOf(p.xp)} · {Number(p.total_km).toFixed(1)} km
+          @{p.username} · Level {levelOf(p.xp)} · {Number(p.total_km).toFixed(1)} km
         </p>
       </div>
       {children}
@@ -100,27 +102,27 @@ function FriendsPage() {
 
   return (
     <AppShell>
-      <h2 className="font-display text-3xl tracking-wide text-foreground">Amigos</h2>
+      <h2 className="font-display text-3xl tracking-wide text-foreground">Friends</h2>
       <div className="flex gap-2">
-        <Input placeholder="Buscar por nombre o @usuario" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === "Enter" && search()} />
-        <Button onClick={search}>Buscar</Button>
+        <Input placeholder="Search by name or @username" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === "Enter" && search()} />
+        <Button onClick={search}>Search</Button>
       </div>
       {results.length > 0 && (
         <ul className="flex flex-col gap-2">
           {results.map((p) => (
             <Row key={p.id} p={p}>
-              <Button size="sm" onClick={() => add(p.id)}>Añadir</Button>
+              <Button size="sm" onClick={() => add(p.id)}>Add</Button>
             </Row>
           ))}
         </ul>
       )}
       {incoming.length > 0 && (
         <section>
-          <h3 className="mb-2 font-display text-xl text-foreground">Solicitudes</h3>
+          <h3 className="mb-2 font-display text-xl text-foreground">Requests</h3>
           <ul className="flex flex-col gap-2">
             {incoming.map((f) => (
               <Row key={f.id} p={f.other}>
-                <Button size="sm" onClick={() => accept(f.id)}>Aceptar</Button>
+                <Button size="sm" onClick={() => accept(f.id)}>Accept</Button>
                 <Button size="sm" variant="ghost" onClick={() => remove(f.id)}>✕</Button>
               </Row>
             ))}
@@ -128,9 +130,9 @@ function FriendsPage() {
         </section>
       )}
       <section>
-        <h3 className="mb-2 font-display text-xl text-foreground">Ranking de amigos</h3>
+        <h3 className="mb-2 font-display text-xl text-foreground">Friends ranking</h3>
         {ranking.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Aún no tienes amigos. ¡Busca a alguien arriba!</p>
+          <p className="text-sm text-muted-foreground">You do not have any friends yet. Find someone above!</p>
         ) : (
           <ul className="flex flex-col gap-2">
             {ranking.map((p, i) => (
@@ -143,11 +145,11 @@ function FriendsPage() {
       </section>
       {outgoing.length > 0 && (
         <section>
-          <h3 className="mb-2 font-display text-xl text-foreground">Enviadas</h3>
+          <h3 className="mb-2 font-display text-xl text-foreground">Sent</h3>
           <ul className="flex flex-col gap-2">
             {outgoing.map((f) => (
               <Row key={f.id} p={f.other}>
-                <span className="text-xs text-muted-foreground">Pendiente</span>
+                <span className="text-xs text-muted-foreground">Pending</span>
               </Row>
             ))}
           </ul>

@@ -6,12 +6,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { initials, useProfile } from "@/lib/game";
 
 const NAV = [
-  { to: "/home", label: "Inicio", icon: Home },
-  { to: "/run", label: "Correr", icon: Play },
-  { to: "/map", label: "Cofres", icon: Map },
-  { to: "/races", label: "Retos", icon: Swords },
-  { to: "/friends", label: "Amigos", icon: Users },
-  { to: "/shop", label: "Tienda", icon: ShoppingBag },
+  { to: "/home", label: "Home", icon: Home },
+  { to: "/run", label: "Run", icon: Play },
+  { to: "/map", label: "Chests", icon: Map },
+  { to: "/races", label: "Challenges", icon: Swords },
+  { to: "/friends", label: "Friends", icon: Users },
+  { to: "/shop", label: "Shop", icon: ShoppingBag },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -30,7 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-background bg-grid">
       <div className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-5 px-5 pb-28 pt-6">
         <header className="flex items-center gap-3">
-          <Link to="/profile" aria-label="Mi perfil" className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary font-display text-xl text-primary-foreground card-glow">
+          <Link to="/profile" aria-label="My profile" className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary font-display text-xl text-primary-foreground card-glow">
             {p ? initials(p.display_name) : "··"}
           </Link>
           <div className="min-w-0 flex-1">
@@ -38,7 +38,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               @{p?.username ?? "…"}
             </p>
             <h1 className="truncate font-display text-xl leading-none text-foreground">
-              {p?.display_name ?? "Cargando"}
+              {p?.display_name ?? "Loading"}
             </h1>
           </div>
           <div className="flex items-center gap-1 rounded-full bg-secondary px-3 py-1.5">
@@ -49,7 +49,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Flame className="h-4 w-4 text-accent" />
             <span className="text-sm font-bold text-foreground">{p?.streak ?? 0}</span>
           </div>
-          <button onClick={signOut} aria-label="Cerrar sesión" className="text-muted-foreground">
+          <button onClick={signOut} aria-label="Sign out" className="text-muted-foreground">
             <LogOut className="h-4 w-4" />
           </button>
         </header>

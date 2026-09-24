@@ -7,7 +7,7 @@ export function RunPanel({
   t,
   onFinish,
   target,
-  finishLabel = "Finalizar carrera",
+  finishLabel = "Finish run",
 }: {
   t: Tracker;
   onFinish: () => void;
@@ -19,9 +19,9 @@ export function RunPanel({
     <section className="flex flex-col gap-4">
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "Distancia", value: `${t.km.toFixed(2)} km` },
-          { label: "Tiempo", value: formatTime(t.seconds) },
-          { label: "Ritmo", value: formatPace(t.km, t.seconds) },
+          { label: "Distance", value: `${t.km.toFixed(2)} km` },
+          { label: "Time", value: formatTime(t.seconds) },
+          { label: "Pace", value: formatPace(t.km, t.seconds) },
         ].map((s) => (
           <div key={s.label} className="flex flex-col items-center rounded-2xl border border-border bg-card p-3">
             <span className="font-display text-xl text-foreground">{s.value}</span>
@@ -45,7 +45,7 @@ export function RunPanel({
           </span>
           <span className="font-display text-2xl text-foreground">{finishLabel}</span>
           <span className="text-xs text-muted-foreground">
-            GPS activo · mantén la app abierta
+            GPS active · keep the app open
           </span>
         </button>
       ) : (
@@ -56,12 +56,12 @@ export function RunPanel({
             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground">
               <Satellite className="h-6 w-6" />
             </span>
-            <span className="font-display text-xl text-foreground">Correr con GPS</span>
+            <span className="font-display text-xl text-foreground">Run with GPS</span>
           </button>
       )}
       {!t.running && (
         <p className="flex items-center justify-center gap-1 text-center text-[11px] text-muted-foreground">
-          <Play className="h-3 w-3" /> Los cofres reales solo se abren corriendo con GPS.
+          <Play className="h-3 w-3" /> Real-world chests only open while running with GPS.
         </p>
       )}
     </section>

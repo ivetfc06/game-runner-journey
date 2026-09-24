@@ -17,10 +17,12 @@ const MISSION_ICON: Record<string, typeof Sunrise> = {
 export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
     meta: [
-      { title: "Tu HUD — RunQuest" },
-      { name: "description", content: "Nivel, monedas, retos pendientes y cofres de tu corredor." },
-      { property: "og:title", content: "Tu HUD — RunQuest" },
-      { property: "og:description", content: "Nivel, monedas, retos pendientes y cofres de tu corredor." },
+      { title: "Your HUD — RunQuest" },
+      { name: "description", content: "Your runner level, coins, pending challenges, and treasure chests." },
+      { property: "og:title", content: "Your HUD — RunQuest" },
+      { property: "og:description", content: "Your runner level, coins, pending challenges, and treasure chests." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: HomePage,
@@ -51,13 +53,13 @@ function HomePage() {
       <section className="rounded-2xl border border-border bg-card p-5 card-glow">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Nivel</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Level</p>
             <p className="font-display text-6xl leading-none text-primary text-glow">{lvl}</p>
           </div>
           <p className="text-right text-xs text-muted-foreground">
             <span className="font-bold text-xp">{prog}</span> / {XP_PER_LEVEL} XP
             <br />
-            {XP_PER_LEVEL - prog} XP para el nivel {lvl + 1}
+            {XP_PER_LEVEL - prog} XP to level {lvl + 1}
           </p>
         </div>
         <div className="mt-4 h-3 overflow-hidden rounded-full bg-secondary">
@@ -72,15 +74,15 @@ function HomePage() {
         <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground animate-pulse-slow">
           <Play className="ml-1 h-7 w-7" />
         </span>
-        <span className="font-display text-2xl tracking-wide text-foreground">Iniciar carrera</span>
-        <span className="text-xs text-muted-foreground">1 km = +100 XP · +10 monedas</span>
+        <span className="font-display text-2xl tracking-wide text-foreground">Start run</span>
+        <span className="text-xs text-muted-foreground">1 km = +100 XP · +10 coins</span>
       </Link>
 
       <section className="grid grid-cols-3 gap-3">
         {[
           { icon: Footprints, label: "Total km", value: Number(p?.total_km ?? 0).toFixed(1) },
-          { icon: Zap, label: "XP total", value: xp.toLocaleString("es-ES") },
-          { icon: Trophy, label: "Racha", value: `${p?.streak ?? 0} días` },
+          { icon: Zap, label: "Total XP", value: xp.toLocaleString("en-GB") },
+          { icon: Trophy, label: "Streak", value: `${p?.streak ?? 0} days` },
         ].map(({ icon: Icon, label, value }) => (
           <div key={label} className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-3">
             <Icon className="h-5 w-5 text-stamina" />
@@ -96,7 +98,7 @@ function HomePage() {
       <section className="rounded-2xl border border-border bg-card p-4">
         <div className="mb-3 flex items-center gap-2">
           <Target className="h-5 w-5 text-primary" />
-          <h3 className="font-display text-xl tracking-wide text-foreground">Misiones de hoy</h3>
+          <h3 className="font-display text-xl tracking-wide text-foreground">Today's quests</h3>
         </div>
         <div className="flex flex-col gap-2">
           {(missions ?? []).map((m) => {
@@ -131,21 +133,21 @@ function HomePage() {
       <div className="grid grid-cols-2 gap-3">
         <Link to="/races" className="rounded-2xl border border-border bg-card p-4">
           <Swords className="h-6 w-6 text-accent" />
-          <p className="mt-2 font-display text-xl text-foreground">Retos</p>
+          <p className="mt-2 font-display text-xl text-foreground">Challenges</p>
           <p className="text-xs text-muted-foreground">
-            {pending > 0 ? `${pending} reto(s) esperando respuesta` : "Reta a un amigo"}
+            {pending > 0 ? `${pending} challenge(s) awaiting your response` : "Challenge a friend"}
           </p>
         </Link>
         <Link to="/map" className="rounded-2xl border border-border bg-card p-4">
           <Map className="h-6 w-6 text-xp" />
-          <p className="mt-2 font-display text-xl text-foreground">Cofres</p>
-          <p className="text-xs text-muted-foreground">Busca tesoros en tu ciudad</p>
+          <p className="mt-2 font-display text-xl text-foreground">Chests</p>
+          <p className="text-xs text-muted-foreground">Find treasure in your city</p>
         </Link>
       </div>
 
       {isAdmin && (
         <Link to="/admin/chests" className="text-center text-sm font-semibold text-primary">
-          Gestionar cofres (admin)
+          Manage chests (admin)
         </Link>
       )}
     </AppShell>

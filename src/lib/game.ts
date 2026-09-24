@@ -41,7 +41,7 @@ export const initials = (name: string) =>
 
 export function errMsg(e: unknown) {
   if (e && typeof e === "object" && "message" in e) return String((e as { message: string }).message);
-  return "Algo ha fallado";
+  return "Something went wrong";
 }
 
 export function useUser() {
@@ -73,6 +73,13 @@ export type Mission = {
   done: boolean;
 };
 
+const MISSION_COPY: Record<string, { title: string; description: string }> = {
+  "early-bird": { title: "Early bird", description: "Finish a run before 8:00 AM." },
+  "first-km": { title: "First kilometre", description: "Run at least 1 km today." },
+  "five-k": { title: "Daily distance", description: "Run at least 5 km today." },
+  hunter: { title: "Treasure hunter", description: "Open a treasure chest today." },
+};
+
 export function useMissions() {
   const { data: user } = useUser();
   return useQuery({
@@ -86,7 +93,11 @@ export function useMissions() {
       ]);
       if (error) throw error;
       const doneSet = new Set((done ?? []).filter((d) => d.day === today).map((d) => d.mission_id));
-      return (missions ?? []).map((m) => ({ ...m, done: doneSet.has(m.id) })) as Mission[];
+      return (missions ?? []).map((m) => ({
+        ...m,
+        ...(MISSION_COPY[m.id] ?? {}),
+        done: doneSet.has(m.id),
+      })) as Mission[];
     },
   });
 }
@@ -96,7 +107,7 @@ export async function syncMissions(qc: QueryClient) {
   const { data, error } = await supabase.rpc("sync_missions");
   if (error) return;
   const newly = (data ?? []) as { title: string; xp: number }[];
-  for (const m of newly) toast.success(`✅ Misión cumplida: ${m.title} · +${m.xp} XP`);
+  for (const m of newly) toast.success(`✅ Quest complete: ${m.title} · +${m.xp} XP`);
   if (newly.length) {
     qc.invalidateQueries({ queryKey: ["missions"] });
     qc.invalidateQueries({ queryKey: ["profile"] });
@@ -153,7 +164,7 @@ export function useRunTracker() {
       setGpsError(null);
       setRunning(true);
       if (!("geolocation" in navigator)) {
-        setGpsError("Tu dispositivo no permite ubicación");
+        setGpsError("Your device does not support location services");
         setRunning(false);
         return;
       }
@@ -175,7 +186,7 @@ export function useRunTracker() {
           }
           lastRef.current = next;
         },
-        (e) => setGpsError(e.message || "No se pudo obtener la ubicación"),
+        (e) => setGpsError(e.message || "Your location could not be accessed"),
         { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 },
       );
     },

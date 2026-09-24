@@ -13,10 +13,12 @@ import { errMsg, useIsAdmin } from "@/lib/game";
 export const Route = createFileRoute("/_authenticated/admin/chests")({
   head: () => ({
     meta: [
-      { title: "Gestión de cofres — RunQuest" },
-      { name: "description", content: "Añade o quita cofres del tesoro en lugares reales." },
-      { property: "og:title", content: "Gestión de cofres — RunQuest" },
-      { property: "og:description", content: "Añade o quita cofres del tesoro en lugares reales." },
+      { title: "Chest management — RunQuest" },
+      { name: "description", content: "Add or remove treasure chests in real-world locations." },
+      { property: "og:title", content: "Chest management — RunQuest" },
+      { property: "og:description", content: "Add or remove treasure chests in real-world locations." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AdminChests,
@@ -32,11 +34,11 @@ function AdminChests() {
   const [pt, setPt] = useState<{ lat: number; lng: number } | null>(null);
   const [rarity, setRarity] = useState<keyof typeof REWARD>("bronze");
 
-  if (isLoading) return <AppShell><p className="text-muted-foreground">Cargando…</p></AppShell>;
-  if (!isAdmin) return <AppShell><p className="text-muted-foreground">Solo los administradores pueden gestionar cofres.</p></AppShell>;
+  if (isLoading) return <AppShell><p className="text-muted-foreground">Loading…</p></AppShell>;
+  if (!isAdmin) return <AppShell><p className="text-muted-foreground">Only administrators can manage chests.</p></AppShell>;
 
   const add = async () => {
-    if (!name || !pt) { toast.error("Pon un nombre y toca el mapa"); return; }
+    if (!name || !pt) { toast.error("Enter a name and tap the map"); return; }
     const [coins, xp] = REWARD[rarity];
     const { error } = await supabase.from("chests").insert({ name, lat: pt.lat, lng: pt.lng, rarity, coins, xp });
     if (error) { toast.error(errMsg(error)); return; }
@@ -51,10 +53,10 @@ function AdminChests() {
 
   return (
     <AppShell>
-      <h2 className="font-display text-3xl text-foreground">Gestión de cofres</h2>
-      <p className="text-sm text-muted-foreground">Toca el mapa para colocar un cofre nuevo.</p>
-      <ChestMap chests={pt ? [...chests, { id: "new", name: "Nuevo", ...pt, rarity }] : chests} onPick={(lat, lng) => setPt({ lat, lng })} />
-      <Input placeholder="Nombre del lugar" value={name} onChange={(e) => setName(e.target.value)} />
+      <h2 className="font-display text-3xl text-foreground">Chest management</h2>
+      <p className="text-sm text-muted-foreground">Tap the map to place a new chest.</p>
+      <ChestMap chests={pt ? [...chests, { id: "new", name: "New", ...pt, rarity }] : chests} onPick={(lat, lng) => setPt({ lat, lng })} />
+      <Input placeholder="Place name" value={name} onChange={(e) => setName(e.target.value)} />
       <div className="flex gap-2">
         {(Object.keys(REWARD) as (keyof typeof REWARD)[]).map((r) => (
           <Button key={r} size="sm" variant={rarity === r ? "default" : "secondary"} onClick={() => setRarity(r)}>
@@ -62,12 +64,12 @@ function AdminChests() {
           </Button>
         ))}
       </div>
-      <Button onClick={add}>Añadir cofre</Button>
+      <Button onClick={add}>Add chest</Button>
       <ul className="flex flex-col gap-2">
         {chests.map((c) => (
           <li key={c.id} className="flex items-center justify-between rounded-2xl border border-border bg-card p-3">
             <span className="text-sm text-foreground">{c.name} · {RARITY_LABEL[c.rarity]}</span>
-            <Button size="sm" variant="ghost" onClick={() => del(c.id)}>Quitar</Button>
+            <Button size="sm" variant="ghost" onClick={() => del(c.id)}>Remove</Button>
           </li>
         ))}
       </ul>

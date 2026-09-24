@@ -55,7 +55,7 @@ export function useAutoClaim(pos: Pos | null, enabled: boolean) {
             return;
           }
           const r = data as { coins: number; xp: number; name: string };
-          toast.success(`🎁 ¡Cofre abierto: ${r.name}! +${r.coins} monedas · +${r.xp} XP`);
+          toast.success(`🎁 Chest opened: ${r.name}! +${r.coins} coins · +${r.xp} XP`);
           qc.invalidateQueries({ queryKey: ["chests"] });
           qc.invalidateQueries({ queryKey: ["inventory"] });
           qc.invalidateQueries({ queryKey: ["profile"] });
@@ -65,7 +65,7 @@ export function useAutoClaim(pos: Pos | null, enabled: boolean) {
   }, [pos, enabled, chests, qc, radius]);
 }
 
-export const RARITY_LABEL: Record<string, string> = { bronze: "Bronce", silver: "Plata", gold: "Oro" };
+export const RARITY_LABEL: Record<string, string> = { bronze: "Bronze", silver: "Silver", gold: "Gold" };
 
 export function useInventory() {
   const { data: user } = useUser();

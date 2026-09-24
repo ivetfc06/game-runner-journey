@@ -21,19 +21,19 @@ export function StreakHud({ p, km = 0, seconds = 0, elev = 0, live = false }: { 
   const armed = live && km >= 0.3;
   const hot = armed && pace > p.speed_target_pace;
   const rows = [
-    { icon: RouteIcon, name: "Distancia", streak: p.dist_streak, goal: `${dT.toFixed(1)} km`, pct: (km / dT) * 100, color: "bg-primary", tone: "text-primary" },
-    { icon: Mountain, name: "Altura", streak: p.elev_streak, goal: `+${p.elev_target} m`, pct: (elev / p.elev_target) * 100, color: "bg-xp", tone: "text-xp" },
+    { icon: RouteIcon, name: "Distance", streak: p.dist_streak, goal: `${dT.toFixed(1)} km`, pct: (km / dT) * 100, color: "bg-primary", tone: "text-primary" },
+    { icon: Mountain, name: "Elevation", streak: p.elev_streak, goal: `+${p.elev_target} m`, pct: (elev / p.elev_target) * 100, color: "bg-xp", tone: "text-xp" },
   ];
   return (
     <section className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-4">
-      <h3 className="font-display text-xl tracking-wide text-foreground">Rachas</h3>
+      <h3 className="font-display text-xl tracking-wide text-foreground">Streaks</h3>
       {rows.map((r) => (
         <div key={r.name}>
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center gap-2 font-semibold text-foreground">
               <r.icon className={`h-4 w-4 ${r.tone}`} /> {r.name} · <span className={r.tone}>x{r.streak}</span>
             </span>
-            <span className="text-xs text-muted-foreground">Objetivo {r.goal}</span>
+            <span className="text-xs text-muted-foreground">Goal {r.goal}</span>
           </div>
           <div className="mt-1 h-2 overflow-hidden rounded-full bg-secondary">
             <div className={`h-full rounded-full ${r.color} transition-all`} style={{ width: `${Math.min(100, r.pct)}%` }} />
@@ -43,7 +43,7 @@ export function StreakHud({ p, km = 0, seconds = 0, elev = 0, live = false }: { 
       <div className={`rounded-xl border p-2 ${hot ? "animate-pulse border-destructive bg-destructive/15" : "border-accent/40 bg-accent/10"}`}>
         <div className="flex items-center justify-between text-sm">
           <span className="flex items-center gap-2 font-semibold text-foreground">
-            {hot ? <Bomb className="h-4 w-4 text-destructive" /> : <Zap className="h-4 w-4 text-accent" />} Velocidad ·{" "}
+            {hot ? <Bomb className="h-4 w-4 text-destructive" /> : <Zap className="h-4 w-4 text-accent" />} Speed ·{" "}
             <span className={hot ? "text-destructive" : "text-accent"}>x{p.speed_streak}</span>
           </span>
           <span className="text-xs text-muted-foreground">
@@ -55,10 +55,10 @@ export function StreakHud({ p, km = 0, seconds = 0, elev = 0, live = false }: { 
         </div>
         {live && (
           <p className={`mt-1 text-xs ${hot ? "font-bold text-destructive" : "text-muted-foreground"}`}>
-            {hot ? `💣 ¡La bomba se calienta! Vas a ${paceTxt(pace)}/km, acelera` : armed ? "⚡ Bomba armada · buen ritmo, sigue así" : "💤 Bomba desactivada · se arma al llevar 300 m corriendo"}
+            {hot ? `💣 The bomb is heating up! You are at ${paceTxt(pace)}/km, speed up` : armed ? "⚡ Bomb armed · good pace, keep going" : "💤 Bomb inactive · arms after 300 m of running"}
           </p>
         )}
-        {!live && <p className="mt-1 text-[11px] text-muted-foreground">Empieza desactivada y se arma al empezar a correr. Si estalla 💣 pierdes el 25% de los niveles.</p>}
+        {!live && <p className="mt-1 text-[11px] text-muted-foreground">It starts inactive and arms once you begin running. If it explodes 💣 you lose 25% of your levels.</p>}
       </div>
     </section>
   );
