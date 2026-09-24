@@ -9,8 +9,8 @@ type P = {
   last_done_week?: string | null;
 };
 
-/** Racha global = media de los tres pilares. */
-export const globalStreak = (p: P) => (p.dist_streak + p.elev_streak + p.speed_streak) / 3;
+/** Racha global = media de los cuatro ámbitos (distancia, altura, velocidad y consistencia). */
+export const globalStreak = (p: P) => (p.dist_streak + p.elev_streak + p.speed_streak + weekly(p).streak) / 4;
 
 export const RUNS_PER_WEEK = 3;
 
