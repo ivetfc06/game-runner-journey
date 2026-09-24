@@ -58,7 +58,7 @@
   --input: oklch(0.36 0.085 141);
   --ring: oklch(0.87 0.185 91);
   --xp: oklch(0.87 0.185 91);
-  --stamina: oklch(0.79 0.17 171);
+  --stamina: oklch(0.9 0.2 103);
 }
 
 @layer base {
