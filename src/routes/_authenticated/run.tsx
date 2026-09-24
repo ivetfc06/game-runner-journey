@@ -57,6 +57,10 @@ function RunPage() {
         setTimeout(() => setBoom(null), 3500);
       }
     }
+    const { data: wk } = await supabase.rpc("track_week");
+    const wr = wk as { week_runs: number; completed: boolean; weekly_streak: number } | null;
+    if (wr?.completed) toast.success(`📅 ¡Semana cumplida! Consistencia: ${wr.weekly_streak} semana(s) seguidas`);
+    else if (wr) toast(`📅 Consistencia: ${Math.min(wr.week_runs, 3)}/3 carreras esta semana`);
     qc.invalidateQueries({ queryKey: ["profile"] });
     void syncMissions(qc);
     t.reset();

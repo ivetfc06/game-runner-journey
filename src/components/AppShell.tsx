@@ -30,9 +30,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-background bg-grid">
       <div className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-5 px-5 pb-28 pt-6">
         <header className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary font-display text-xl text-primary-foreground card-glow">
+          <Link to="/profile" aria-label="Mi perfil" className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary font-display text-xl text-primary-foreground card-glow">
             {p ? initials(p.display_name) : "··"}
-          </div>
+          </Link>
           <div className="min-w-0 flex-1">
             <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
               @{p?.username ?? "…"}
