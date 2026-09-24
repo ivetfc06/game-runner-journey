@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { errMsg, haversine, type Pos, syncMissions, useUser } from "@/lib/game";
+import { errMsg, haversine, type Pos, syncMissions, useProfile, useUser } from "@/lib/game";
 
 export function useChests() {
   const { data: user } = useUser();
@@ -26,13 +26,25 @@ export function useChests() {
 export function useAutoClaim(pos: Pos | null, enabled: boolean) {
   const { data: chests } = useChests();
   const qc = useQueryClient();
+  const { data: prof } = useProfile();
+  const radius = ((prof as { magnet_runs?: number } | undefined)?.magnet_runs ?? 0) > 0 ? 85 : 35;
   const trying = useRef(new Set<string>());
+  const spawned = useRef(false);
+
+  // Al empezar la carrera, genera cofres alrededor del jugador (separados entre sí)
+  useEffect(() => {
+    if (!enabled) { spawned.current = false; return; }
+    if (!pos || spawned.current) return;
+    spawned.current = true;
+    (supabase.rpc as unknown as (n: string, a: object) => Promise<{ data: number | null }>)("spawn_nearby_chests", { _lat: pos.lat, _lng: pos.lng })
+      .then(({ data }) => { if (data) qc.invalidateQueries({ queryKey: ["chests"] }); });
+  }, [enabled, pos, qc]);
 
   useEffect(() => {
     if (!enabled || !pos || !chests) return;
     for (const c of chests) {
       if (c.claimed || trying.current.has(c.id)) continue;
-      if (haversine(pos, c) > 35) continue;
+      if (haversine(pos, c) > radius) continue;
       trying.current.add(c.id);
       supabase
         .rpc("claim_chest", { _chest: c.id, _lat: pos.lat, _lng: pos.lng })
@@ -50,7 +62,7 @@ export function useAutoClaim(pos: Pos | null, enabled: boolean) {
           void syncMissions(qc);
         });
     }
-  }, [pos, enabled, chests, qc]);
+  }, [pos, enabled, chests, qc, radius]);
 }
 
 export const RARITY_LABEL: Record<string, string> = { bronze: "Bronce", silver: "Plata", gold: "Oro" };
