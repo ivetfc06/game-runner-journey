@@ -52,7 +52,7 @@ function ProfilePage() {
         ))}
       </section>
       <section className="grid grid-cols-3 gap-2 text-center">
-        {[["Nivel", lvl.level], ["Mejor racha semanal", `${w.best} sem`], ["Rango", w.tier]].map(([k, v]) => (
+        {[["Nivel", lvl], ["Mejor racha semanal", `${w.best} sem`], ["Rango", w.tier]].map(([k, v]) => (
           <div key={String(k)} className="rounded-xl border border-border bg-card p-3">
             <p className="font-display text-2xl text-foreground">{v}</p>
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{k}</p>
