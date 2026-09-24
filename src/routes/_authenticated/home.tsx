@@ -4,6 +4,7 @@ import { Check, Footprints, Gift, Map, Play, Route as RouteIcon, Sunrise, Swords
 import { AppShell } from "@/components/AppShell";
 import { supabase } from "@/integrations/supabase/client";
 import { StreakHud } from "@/components/StreakHud";
+import { GlobalStreakCard } from "@/components/GlobalStreakCard";
 import { levelOf, levelProgress, useIsAdmin, useMissions, useProfile, XP_PER_LEVEL } from "@/lib/game";
 
 const MISSION_ICON: Record<string, typeof Sunrise> = {
@@ -89,6 +90,7 @@ function HomePage() {
         ))}
       </section>
 
+      {p && <GlobalStreakCard p={p} />}
       {p && <StreakHud p={p} />}
 
       <section className="rounded-2xl border border-border bg-card p-4">

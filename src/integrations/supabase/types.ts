@@ -151,6 +151,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          best_weekly_streak: number
           coins: number
           created_at: string
           display_name: string
@@ -159,6 +160,7 @@ export type Database = {
           elev_streak: number
           elev_target: number
           id: string
+          last_done_week: string | null
           last_run_date: string | null
           last_run_finished_at: string | null
           speed_streak: number
@@ -170,10 +172,14 @@ export type Database = {
           today_km_on: string | null
           total_km: number
           username: string
+          week_key: string | null
+          week_runs: number
+          weekly_streak: number
           xp: number
           xp_boost_runs: number
         }
         Insert: {
+          best_weekly_streak?: number
           coins?: number
           created_at?: string
           display_name: string
@@ -182,6 +188,7 @@ export type Database = {
           elev_streak?: number
           elev_target?: number
           id: string
+          last_done_week?: string | null
           last_run_date?: string | null
           last_run_finished_at?: string | null
           speed_streak?: number
@@ -193,10 +200,14 @@ export type Database = {
           today_km_on?: string | null
           total_km?: number
           username: string
+          week_key?: string | null
+          week_runs?: number
+          weekly_streak?: number
           xp?: number
           xp_boost_runs?: number
         }
         Update: {
+          best_weekly_streak?: number
           coins?: number
           created_at?: string
           display_name?: string
@@ -205,6 +216,7 @@ export type Database = {
           elev_streak?: number
           elev_target?: number
           id?: string
+          last_done_week?: string | null
           last_run_date?: string | null
           last_run_finished_at?: string | null
           speed_streak?: number
@@ -216,6 +228,9 @@ export type Database = {
           today_km_on?: string | null
           total_km?: number
           username?: string
+          week_key?: string | null
+          week_runs?: number
+          weekly_streak?: number
           xp?: number
           xp_boost_runs?: number
         }
@@ -417,6 +432,7 @@ export type Database = {
         Returns: undefined
       }
       sync_missions: { Args: never; Returns: Json }
+      track_week: { Args: never; Returns: Json }
       update_race_progress: {
         Args: { _km: number; _race: string; _seconds: number }
         Returns: Json

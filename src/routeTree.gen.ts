@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedFriendsRouteImport } from './routes/_authenticated/friends'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedMapRouteImport } from './routes/_authenticated/map'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedRunRouteImport } from './routes/_authenticated/run'
 import { Route as AuthenticatedShopRouteImport } from './routes/_authenticated/shop'
 import { Route as AuthenticatedAdminChestsRouteImport } from './routes/_authenticated/admin.chests'
@@ -50,6 +51,11 @@ const AuthenticatedMapRoute = AuthenticatedMapRouteImport.update({
   path: '/map',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedRunRoute = AuthenticatedRunRouteImport.update({
   id: '/run',
   path: '/run',
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/friends': typeof AuthenticatedFriendsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/map': typeof AuthenticatedMapRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/run': typeof AuthenticatedRunRoute
   '/shop': typeof AuthenticatedShopRoute
   '/admin/chests': typeof AuthenticatedAdminChestsRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/friends': typeof AuthenticatedFriendsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/map': typeof AuthenticatedMapRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/run': typeof AuthenticatedRunRoute
   '/shop': typeof AuthenticatedShopRoute
   '/admin/chests': typeof AuthenticatedAdminChestsRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/_authenticated/friends': typeof AuthenticatedFriendsRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/map': typeof AuthenticatedMapRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/run': typeof AuthenticatedRunRoute
   '/_authenticated/shop': typeof AuthenticatedShopRoute
   '/_authenticated/admin/chests': typeof AuthenticatedAdminChestsRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
     | '/friends'
     | '/home'
     | '/map'
+    | '/profile'
     | '/run'
     | '/shop'
     | '/admin/chests'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
     | '/friends'
     | '/home'
     | '/map'
+    | '/profile'
     | '/run'
     | '/shop'
     | '/admin/chests'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '/_authenticated/friends'
     | '/_authenticated/home'
     | '/_authenticated/map'
+    | '/_authenticated/profile'
     | '/_authenticated/run'
     | '/_authenticated/shop'
     | '/_authenticated/admin/chests'
@@ -205,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMapRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/run': {
       id: '/_authenticated/run'
       path: '/run'
@@ -247,6 +266,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFriendsRoute: typeof AuthenticatedFriendsRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedMapRoute: typeof AuthenticatedMapRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedRunRoute: typeof AuthenticatedRunRoute
   AuthenticatedShopRoute: typeof AuthenticatedShopRoute
   AuthenticatedAdminChestsRoute: typeof AuthenticatedAdminChestsRoute
@@ -258,6 +278,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFriendsRoute: AuthenticatedFriendsRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedMapRoute: AuthenticatedMapRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedRunRoute: AuthenticatedRunRoute,
   AuthenticatedShopRoute: AuthenticatedShopRoute,
   AuthenticatedAdminChestsRoute: AuthenticatedAdminChestsRoute,
