@@ -112,7 +112,7 @@ function RacePage() {
               <div className="flex justify-between text-sm">
                 <span className="font-semibold text-foreground">{uid === me ? "Tú" : data!.names.get(uid)}</span>
                 <span className="text-muted-foreground">
-                  {p?.time_seconds ? `🏁 ${formatTime(p.time_seconds)}` : race.mode === "live" ? `${km.toFixed(2)} km` : "Sin terminar"}
+                  {p?.time_seconds ? `🏁 ${formatTime(p.time_seconds)}` : `${km.toFixed(2)} km`}
                 </span>
               </div>
               <div className="mt-1 h-3 overflow-hidden rounded-full bg-secondary">
