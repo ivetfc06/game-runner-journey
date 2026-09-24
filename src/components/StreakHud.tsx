@@ -18,7 +18,8 @@ export function StreakHud({ p, km = 0, seconds = 0, elev = 0, live = false }: { 
   const dT = Number(p.dist_target);
   const sKm = Number(p.speed_target_km);
   const pace = km > 0 ? seconds / km : 0;
-  const hot = live && km >= 0.2 && pace > p.speed_target_pace;
+  const armed = live && km >= 0.3;
+  const hot = armed && pace > p.speed_target_pace;
   const rows = [
     { icon: RouteIcon, name: "Distancia", streak: p.dist_streak, goal: `${dT.toFixed(1)} km`, pct: (km / dT) * 100, color: "bg-primary", tone: "text-primary" },
     { icon: Mountain, name: "Altura", streak: p.elev_streak, goal: `+${p.elev_target} m`, pct: (elev / p.elev_target) * 100, color: "bg-xp", tone: "text-xp" },
@@ -54,10 +55,10 @@ export function StreakHud({ p, km = 0, seconds = 0, elev = 0, live = false }: { 
         </div>
         {live && (
           <p className={`mt-1 text-xs ${hot ? "font-bold text-destructive" : "text-muted-foreground"}`}>
-            {hot ? `💣 ¡La bomba se calienta! Vas a ${paceTxt(pace)}/km, acelera` : km >= 0.2 ? "⚡ Buen ritmo, sigue así" : "La bomba se activa si vas lento o no llegas"}
+            {hot ? `💣 ¡La bomba se calienta! Vas a ${paceTxt(pace)}/km, acelera` : armed ? "⚡ Bomba armada · buen ritmo, sigue así" : "💤 Bomba desactivada · se arma al llevar 300 m corriendo"}
           </p>
         )}
-        {!live && <p className="mt-1 text-[11px] text-muted-foreground">Si estalla 💣 pierdes el 25% de los niveles, no todo.</p>}
+        {!live && <p className="mt-1 text-[11px] text-muted-foreground">Empieza desactivada y se arma al empezar a correr. Si estalla 💣 pierdes el 25% de los niveles.</p>}
       </div>
     </section>
   );

@@ -61,11 +61,11 @@ function RacePage() {
   const target = Number(race?.distance_km ?? 0);
   const sent = useRef(0);
 
-  // Push progress every ~0.1 km (live mode) and finish when target reached
+  // Push progress every ~50 m so the rival sees it live and finish when target reached
   useEffect(() => {
     if (!race || !t.running) return;
     const done = t.km >= target;
-    if (!done && (race.mode !== "live" || t.km - sent.current < 0.1)) return;
+    if (!done && t.km - sent.current < 0.05) return;
     sent.current = t.km;
     if (done) t.stop();
     supabase
