@@ -6,7 +6,7 @@ import ChestMap from "@/components/ChestMap";
 import { RunPanel } from "@/components/RunPanel";
 import { supabase } from "@/integrations/supabase/client";
 import { useAutoClaim, useChests } from "@/lib/chests";
-import { errMsg, useRunTracker } from "@/lib/game";
+import { errMsg, syncMissions, useRunTracker } from "@/lib/game";
 
 export const Route = createFileRoute("/_authenticated/run")({
   head: () => ({
@@ -41,6 +41,7 @@ function RunPage() {
     toast.success(`¡Carrera completada! +${r.xp} XP${r.boosted ? " (x2)" : ""} · +${r.coins} monedas`);
     if (r.freezes_used > 0) toast(`🛡️ Usaste ${r.freezes_used} protector(es) y tu racha sigue viva`);
     qc.invalidateQueries({ queryKey: ["profile"] });
+    void syncMissions(qc);
     t.reset();
   };
 

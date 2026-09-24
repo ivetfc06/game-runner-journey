@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { errMsg, haversine, type Pos, useUser } from "@/lib/game";
+import { errMsg, haversine, type Pos, syncMissions, useUser } from "@/lib/game";
 
 export function useChests() {
   const { data: user } = useUser();
@@ -46,6 +46,7 @@ export function useAutoClaim(pos: Pos | null, enabled: boolean) {
           toast.success(`🎁 ¡Cofre abierto: ${r.name}! +${r.coins} monedas · +${r.xp} XP`);
           qc.invalidateQueries({ queryKey: ["chests"] });
           qc.invalidateQueries({ queryKey: ["profile"] });
+          void syncMissions(qc);
         });
     }
   }, [pos, enabled, chests, qc]);

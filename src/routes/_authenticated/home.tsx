@@ -1,9 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Footprints, Map, Play, Swords, Trophy, Zap } from "lucide-react";
+import { Check, Footprints, Gift, Map, Play, Route as RouteIcon, Sunrise, Swords, Target, Trophy, Zap } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { supabase } from "@/integrations/supabase/client";
-import { levelOf, levelProgress, useIsAdmin, useProfile, XP_PER_LEVEL } from "@/lib/game";
+import { levelOf, levelProgress, useIsAdmin, useMissions, useProfile, XP_PER_LEVEL } from "@/lib/game";
+
+const MISSION_ICON: Record<string, typeof Sunrise> = {
+  "early-bird": Sunrise,
+  "first-km": Footprints,
+  "five-k": RouteIcon,
+  hunter: Gift,
+};
 
 export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
@@ -20,6 +27,7 @@ export const Route = createFileRoute("/_authenticated/home")({
 function HomePage() {
   const { data: p } = useProfile();
   const { data: isAdmin } = useIsAdmin();
+  const { data: missions } = useMissions();
   const { data: pending = 0 } = useQuery({
     queryKey: ["races-pending", p?.id],
     enabled: !!p,
@@ -78,6 +86,41 @@ function HomePage() {
             <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
           </div>
         ))}
+      </section>
+
+      <section className="rounded-2xl border border-border bg-card p-4">
+        <div className="mb-3 flex items-center gap-2">
+          <Target className="h-5 w-5 text-primary" />
+          <h3 className="font-display text-xl tracking-wide text-foreground">Misiones de hoy</h3>
+        </div>
+        <div className="flex flex-col gap-2">
+          {(missions ?? []).map((m) => {
+            const Icon = MISSION_ICON[m.id] ?? Target;
+            return (
+              <div
+                key={m.id}
+                className={`flex items-center gap-3 rounded-xl border p-3 ${
+                  m.done ? "border-xp/40 bg-xp/10" : "border-border bg-secondary/40"
+                }`}
+              >
+                <span
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+                    m.done ? "bg-xp text-background" : "bg-secondary text-muted-foreground"
+                  }`}
+                >
+                  {m.done ? <Check className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className={`text-sm font-semibold ${m.done ? "text-xp line-through" : "text-foreground"}`}>
+                    {m.title}
+                  </p>
+                  <p className="text-xs text-muted-foreground">{m.description}</p>
+                </div>
+                <span className="shrink-0 text-xs font-bold text-xp">+{m.xp_reward} XP</span>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       <div className="grid grid-cols-2 gap-3">
