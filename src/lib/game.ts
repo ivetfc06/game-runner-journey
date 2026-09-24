@@ -175,8 +175,9 @@ export function useRunTracker() {
           if (p.coords.accuracy > 35) return;
           const alt = p.coords.altitude;
           if (alt != null) {
-            if (altRef.current != null && alt - altRef.current > 1) setElev((e) => e + (alt - altRef.current!));
-            if (altRef.current == null || Math.abs(alt - altRef.current) > 1) altRef.current = alt;
+            const gain = altRef.current != null ? alt - altRef.current : 0;
+            if (gain > 1) setElev((e) => e + gain);
+            if (altRef.current == null || Math.abs(gain) > 1) altRef.current = alt;
           }
           if (lastRef.current) {
             const d = haversine(lastRef.current, next);
