@@ -13,6 +13,7 @@ import {
   Star,
   Target,
   Medal,
+  Coins,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -52,13 +53,41 @@ const ACHIEVEMENTS = [
   { icon: Target, label: "100 km total", unlocked: false },
 ];
 
+const TREASURES = [
+  { at: 0.8, label: "Cofre de bronce", coins: 20, emoji: "🪙" },
+  { at: 1.9, label: "Gema azul", coins: 50, emoji: "💎" },
+  { at: 3.2, label: "Cofre de plata", coins: 40, emoji: "🎁" },
+  { at: 4.4, label: "Cofre dorado", coins: 100, emoji: "👑" },
+];
+
+const FRIENDS = [
+  { name: "Marc", initials: "MR", start: 0.6, speed: 0.04, type: "adelantas" as const },
+  { name: "Laura", initials: "LG", start: 3.0, speed: -0.05, type: "cruzas" as const },
+  { name: "Pau", initials: "PS", start: 2.4, speed: 0.05, type: "adelantas" as const },
+];
+const FRIEND_REWARD = { adelantas: 30, cruzas: 15 };
+
 function Index() {
   const [running, setRunning] = useState(false);
   const [xp, setXp] = useState(1240);
   const [km, setKm] = useState(0);
+  const [coins, setCoins] = useState(320);
+  const [collected, setCollected] = useState<number[]>([]);
+  const [met, setMet] = useState<string[]>([]);
+  const [feed, setFeed] = useState<{ id: number; text: string; coins: number }[]>([]);
+  const [toast, setToast] = useState<string | null>(null);
   const level = 7;
   const xpForNext = 2000;
   const xpPct = Math.min(100, Math.round((xp / xpForNext) * 100));
+
+  const friendPos = (f: (typeof FRIENDS)[number], k: number) => f.start + f.speed * k * 10;
+
+  const reward = (text: string, amount: number) => {
+    setCoins((c) => c + amount);
+    setFeed((f) => [{ id: Date.now() + Math.random(), text, coins: amount }, ...f].slice(0, 6));
+    setToast(`${text} +${amount}`);
+    setTimeout(() => setToast(null), 1500);
+  };
 
   const toggleRun = () => {
     if (running) {
@@ -66,23 +95,52 @@ function Index() {
       return;
     }
     setRunning(true);
+    setCollected([]);
+    setMet([]);
+    const got = new Set<number>();
+    const seen = new Set<string>();
+    let k = 0;
     const interval = setInterval(() => {
-      setKm((k) => {
-        const next = k + 0.1;
-        if (next >= 5) {
-          clearInterval(interval);
-          setRunning(false);
-          setXp((v) => v + 500);
-          return 0;
+      const prev = k;
+      k = Math.round((k + 0.1) * 10) / 10;
+      TREASURES.forEach((t, i) => {
+        if (!got.has(i) && k >= t.at) {
+          got.add(i);
+          setCollected((c) => [...c, i]);
+          reward(`${t.emoji} ${t.label}`, t.coins);
         }
-        setXp((v) => v + 10);
-        return Math.round(next * 10) / 10;
       });
+      FRIENDS.forEach((f) => {
+        const before = friendPos(f, prev) - prev;
+        const after = friendPos(f, k) - k;
+        if (!seen.has(f.name) && before > 0 && after <= 0) {
+          seen.add(f.name);
+          setMet((m) => [...m, f.name]);
+          reward(
+            f.type === "adelantas" ? `⚡ Adelantas a ${f.name}` : `🤝 Te cruzas con ${f.name}`,
+            FRIEND_REWARD[f.type],
+          );
+        }
+      });
+      setXp((v) => v + 10);
+      if (k >= 5) {
+        clearInterval(interval);
+        setRunning(false);
+        setXp((v) => v + 500);
+      }
+      setKm(k >= 5 ? 5 : k);
     }, 400);
   };
 
+  const pct = (x: number) => `${Math.max(0, Math.min(100, (x / 5) * 100))}%`;
+
   return (
     <div className="min-h-screen bg-background bg-grid">
+      {toast && (
+        <div className="fixed left-1/2 top-4 z-50 -translate-x-1/2 rounded-full border border-accent/50 bg-card px-4 py-2 text-sm font-bold text-accent card-glow">
+          {toast} 🪙
+        </div>
+      )}
       <div className="mx-auto flex min-h-screen w-full max-w-md flex-col gap-5 px-5 pb-10 pt-6">
         {/* Header: jugador */}
         <header className="flex items-center gap-3">
@@ -94,6 +152,10 @@ function Index() {
               Corredora
             </p>
             <h1 className="font-display text-xl leading-none text-foreground">Ivet Fernández</h1>
+          </div>
+          <div className="flex items-center gap-1 rounded-full bg-secondary px-3 py-1.5">
+            <Coins className="h-4 w-4 text-xp" />
+            <span className="text-sm font-bold text-foreground">{coins}</span>
           </div>
           <div className="flex items-center gap-1 rounded-full bg-secondary px-3 py-1.5">
             <Flame className="h-4 w-4 text-accent" />
@@ -116,7 +178,7 @@ function Index() {
                 {xpForNext.toLocaleString("es-ES")} XP
               </p>
               <p className="text-[11px] text-muted-foreground">
-                {xpForNext - xp} XP para el nivel {level + 1}
+                {Math.max(0, xpForNext - xp)} XP para el nivel {level + 1}
               </p>
             </div>
           </div>
@@ -126,6 +188,69 @@ function Index() {
               style={{ width: `${xpPct}%` }}
             />
           </div>
+        </section>
+
+        {/* Pista en vivo */}
+        <section className="rounded-2xl border border-border bg-card p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-display text-xl tracking-wide text-foreground">Tu ruta · 5 km</h2>
+            <span className="text-xs text-muted-foreground">
+              {collected.length}/{TREASURES.length} tesoros · {met.length}/{FRIENDS.length} amigos
+            </span>
+          </div>
+          <div className="relative h-16">
+            <div className="absolute left-0 right-0 top-1/2 h-2 -translate-y-1/2 rounded-full bg-secondary" />
+            <div
+              className="absolute left-0 top-1/2 h-2 -translate-y-1/2 rounded-full bg-primary transition-all"
+              style={{ width: pct(km) }}
+            />
+            {TREASURES.map((t, i) => (
+              <span
+                key={t.label}
+                className={`absolute top-0 -translate-x-1/2 text-lg transition-all ${
+                  collected.includes(i) ? "scale-50 opacity-20" : "animate-bounce"
+                }`}
+                style={{ left: pct(t.at) }}
+              >
+                {t.emoji}
+              </span>
+            ))}
+            {FRIENDS.map((f) => (
+              <span
+                key={f.name}
+                className={`absolute bottom-0 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full text-[9px] font-bold transition-all ${
+                  met.includes(f.name) ? "bg-accent text-accent-foreground" : "bg-stamina text-background"
+                }`}
+                style={{ left: pct(friendPos(f, km)) }}
+                title={f.name}
+              >
+                {f.initials}
+              </span>
+            ))}
+            <span
+              className="absolute top-1/2 flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground card-glow transition-all"
+              style={{ left: pct(km) }}
+            >
+              TÚ
+            </span>
+          </div>
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            Coge tesoros 🎁 · Adelanta a un amigo: +{FRIEND_REWARD.adelantas} 🪙 · Crúzate con uno: +
+            {FRIEND_REWARD.cruzas} 🪙
+          </p>
+          {feed.length > 0 && (
+            <ul className="mt-3 flex flex-col gap-1.5">
+              {feed.map((e) => (
+                <li
+                  key={e.id}
+                  className="flex items-center justify-between rounded-lg bg-secondary px-3 py-1.5 text-sm text-foreground"
+                >
+                  <span>{e.text}</span>
+                  <span className="font-bold text-xp">+{e.coins} 🪙</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
 
         {/* Botón de carrera */}
@@ -148,10 +273,10 @@ function Index() {
             {running ? "Finalizar carrera" : "Iniciar carrera"}
           </span>
           {running && (
-            <span className="text-sm font-semibold text-primary">{km.toFixed(1)} km · +XP en curso</span>
+            <span className="text-sm font-semibold text-primary">{km.toFixed(1)} km · buscando tesoros…</span>
           )}
           {!running && (
-            <span className="text-xs text-muted-foreground">Simulación: 5 km = +500 XP</span>
+            <span className="text-xs text-muted-foreground">Simulación: 5 km = +500 XP + monedas</span>
           )}
         </button>
 
