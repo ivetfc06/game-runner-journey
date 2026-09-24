@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type QueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 export const XP_PER_LEVEL = 500;
@@ -61,6 +62,45 @@ export function useProfile() {
       return data;
     },
   });
+}
+
+export type Mission = {
+  id: string;
+  title: string;
+  description: string;
+  xp_reward: number;
+  sort: number;
+  done: boolean;
+};
+
+export function useMissions() {
+  const { data: user } = useUser();
+  return useQuery({
+    queryKey: ["missions", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const today = new Date().toLocaleDateString("sv-SE");
+      const [{ data: missions, error }, { data: done }] = await Promise.all([
+        supabase.from("missions").select("*").order("sort"),
+        supabase.from("user_missions").select("mission_id, day"),
+      ]);
+      if (error) throw error;
+      const doneSet = new Set((done ?? []).filter((d) => d.day === today).map((d) => d.mission_id));
+      return (missions ?? []).map((m) => ({ ...m, done: doneSet.has(m.id) })) as Mission[];
+    },
+  });
+}
+
+/** Checks today's missions server-side, awards XP and toasts new completions. */
+export async function syncMissions(qc: QueryClient) {
+  const { data, error } = await supabase.rpc("sync_missions");
+  if (error) return;
+  const newly = (data ?? []) as { title: string; xp: number }[];
+  for (const m of newly) toast.success(`✅ Misión cumplida: ${m.title} · +${m.xp} XP`);
+  if (newly.length) {
+    qc.invalidateQueries({ queryKey: ["missions"] });
+    qc.invalidateQueries({ queryKey: ["profile"] });
+  }
 }
 
 export function useIsAdmin() {
