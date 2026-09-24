@@ -16,6 +16,8 @@ export const Route = createFileRoute("/_authenticated/races/$id")({
       { name: "description", content: "Challenge details and race against your friend." },
       { property: "og:title", content: "Challenge — RunQuest" },
       { property: "og:description", content: "Challenge details and race against your friend." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: RacePage,

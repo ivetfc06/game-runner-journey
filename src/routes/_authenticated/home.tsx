@@ -21,6 +21,8 @@ export const Route = createFileRoute("/_authenticated/home")({
       { name: "description", content: "Your runner level, coins, pending challenges, and treasure chests." },
       { property: "og:title", content: "Your HUD — RunQuest" },
       { property: "og:description", content: "Your runner level, coins, pending challenges, and treasure chests." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: HomePage,

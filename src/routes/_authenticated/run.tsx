@@ -17,6 +17,8 @@ export const Route = createFileRoute("/_authenticated/run")({
       { name: "description", content: "GPS free run: earn XP and coins, and open chests along the way." },
       { property: "og:title", content: "Run — RunQuest" },
       { property: "og:description", content: "GPS free run: earn XP and coins, and open chests along the way." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: RunPage,

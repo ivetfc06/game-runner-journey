@@ -17,6 +17,8 @@ export const Route = createFileRoute("/_authenticated/admin/chests")({
       { name: "description", content: "Add or remove treasure chests in real-world locations." },
       { property: "og:title", content: "Chest management — RunQuest" },
       { property: "og:description", content: "Add or remove treasure chests in real-world locations." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: AdminChests,

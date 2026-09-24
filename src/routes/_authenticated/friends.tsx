@@ -15,6 +15,8 @@ export const Route = createFileRoute("/_authenticated/friends")({
       { name: "description", content: "Add fellow runners and compete in the rankings." },
       { property: "og:title", content: "Friends — RunQuest" },
       { property: "og:description", content: "Add fellow runners and compete in the rankings." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: FriendsPage,

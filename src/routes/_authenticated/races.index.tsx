@@ -16,6 +16,8 @@ export const Route = createFileRoute("/_authenticated/races/")({
       { name: "description", content: "Challenge your friends live or remotely and wager coins." },
       { property: "og:title", content: "Challenges — RunQuest" },
       { property: "og:description", content: "Challenge your friends live or remotely and wager coins." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: RacesPage,

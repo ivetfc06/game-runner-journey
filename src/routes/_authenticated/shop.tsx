@@ -15,6 +15,8 @@ export const Route = createFileRoute("/_authenticated/shop")({
       { name: "description", content: "Spend your coins on streak freezes and XP boosts." },
       { property: "og:title", content: "Shop — RunQuest" },
       { property: "og:description", content: "Spend your coins on streak freezes and XP boosts." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ShopPage,

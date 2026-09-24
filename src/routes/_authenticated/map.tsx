@@ -9,6 +9,8 @@ export const Route = createFileRoute("/_authenticated/map")({
       { name: "description", content: "Your inventory of treasure chests collected while running." },
       { property: "og:title", content: "Treasure chests — RunQuest" },
       { property: "og:description", content: "Your inventory of treasure chests collected while running." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: MapPage,
