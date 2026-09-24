@@ -79,7 +79,7 @@ function HomePage() {
       <section className="grid grid-cols-3 gap-3">
         {[
           { icon: Footprints, label: "Total km", value: Number(p?.total_km ?? 0).toFixed(1) },
-          { icon: Zap, label: "Total XP", value: xp.toLocaleString("es-ES") },
+          { icon: Zap, label: "Total XP", value: xp.toLocaleString("en-GB") },
           { icon: Trophy, label: "Streak", value: `${p?.streak ?? 0} days` },
         ].map(({ icon: Icon, label, value }) => (
           <div key={label} className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card p-3">

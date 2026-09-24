@@ -73,6 +73,13 @@ export type Mission = {
   done: boolean;
 };
 
+const MISSION_COPY: Record<string, { title: string; description: string }> = {
+  "early-bird": { title: "Early bird", description: "Finish a run before 8:00 AM." },
+  "first-km": { title: "First kilometre", description: "Run at least 1 km today." },
+  "five-k": { title: "Daily distance", description: "Run at least 5 km today." },
+  hunter: { title: "Treasure hunter", description: "Open a treasure chest today." },
+};
+
 export function useMissions() {
   const { data: user } = useUser();
   return useQuery({
@@ -86,7 +93,11 @@ export function useMissions() {
       ]);
       if (error) throw error;
       const doneSet = new Set((done ?? []).filter((d) => d.day === today).map((d) => d.mission_id));
-      return (missions ?? []).map((m) => ({ ...m, done: doneSet.has(m.id) })) as Mission[];
+      return (missions ?? []).map((m) => ({
+        ...m,
+        ...(MISSION_COPY[m.id] ?? {}),
+        done: doneSet.has(m.id),
+      })) as Mission[];
     },
   });
 }

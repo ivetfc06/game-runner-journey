@@ -27,7 +27,7 @@ function ProfilePage() {
   const pillars = [
     { icon: RouteIcon, name: "Distance", lvl: p.dist_streak, tone: "text-primary", stats: [["Current goal", `${Number(p.dist_target).toFixed(1)} km`], ["Total km", `${Number(p.total_km).toFixed(1)} km`]] },
     { icon: Mountain, name: "Elevation", lvl: p.elev_streak, tone: "text-xp", stats: [["Current goal", `+${p.elev_target} m`], ["Increase per level", "+25 m"]] },
-    { icon: Bomb, name: "Speed (Bomb)", lvl: p.speed_streak, tone: "text-accent", stats: [["Current goal", `${p.speed_target_km} km a ${formatPace(1, p.speed_target_pace)}/km`], ["If it explodes", "−25% of levels"]] },
+    { icon: Bomb, name: "Speed (Bomb)", lvl: p.speed_streak, tone: "text-accent", stats: [["Current goal", `${p.speed_target_km} km at ${formatPace(1, p.speed_target_pace)}/km`], ["If it explodes", "−25% of levels"]] },
     { icon: CalendarCheck, name: "Consistency", lvl: w.streak, tone: "text-accent", stats: [["This week", `${Math.min(w.runs, RUNS_PER_WEEK)}/${RUNS_PER_WEEK} runs`], ["Best streak", `${w.best} wks`]] },
   ];
   const max = Math.max(1, ...pillars.map((x) => x.lvl));
@@ -53,14 +53,14 @@ function ProfilePage() {
         ))}
       </section>
       <section className="grid grid-cols-3 gap-2 text-center">
-        {[["Level", lvl], ["Best streak wksanal", `${w.best} wks`], ["Rank", w.tier]].map(([k, v]) => (
+        {[["Level", lvl], ["Best weekly streak", `${w.best} wks`], ["Rank", w.tier]].map(([k, v]) => (
           <div key={String(k)} className="rounded-xl border border-border bg-card p-3">
             <p className="font-display text-2xl text-foreground">{v}</p>
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{k}</p>
           </div>
         ))}
       </section>
-      <p className="text-xs text-muted-foreground">Consistency: corre {3} veces en una wksana (lunes a domingo) para sumar una wksana. Si fallas una wksana, vuelve a empezar. Premio al cumplir: monedas y XP que crecen con la racha.</p>
+      <p className="text-xs text-muted-foreground">Consistency: run {3} times in one week (Monday to Sunday) to add a week. Miss a week and it restarts. Your coin and XP reward grows with your streak.</p>
     </AppShell>
   );
 }

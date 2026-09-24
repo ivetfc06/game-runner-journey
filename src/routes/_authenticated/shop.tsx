@@ -96,7 +96,7 @@ function ShopPage() {
     <AppShell>
       <div>
         <h2 className="font-display text-3xl tracking-wide text-foreground">Shop</h2>
-        <p className="text-sm text-muted-foreground">Canjea las coins que ganas corriendo, abriendo cofres y ganando retos.</p>
+        <p className="text-sm text-muted-foreground">Spend coins earned from running, opening chests, and winning challenges.</p>
       </div>
       <div className="flex flex-col gap-3">
         {ITEMS.map((it) => {

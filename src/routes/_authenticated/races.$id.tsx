@@ -98,7 +98,7 @@ function RacePage() {
           {data!.names.get(race.creator)} vs {data!.names.get(race.opponent)}
         </h2>
         <p className="text-sm text-muted-foreground">
-          Pot: {race.stake * 2} coins · Bonus: +100 coins y +250 XP
+          Pot: {race.stake * 2} coins · Bonus: +100 coins and +250 XP
           {race.deadline && race.status !== "finished" && ` · Ends ${new Date(race.deadline).toLocaleString("en-GB")}`}
         </p>
       </div>
