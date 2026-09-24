@@ -79,10 +79,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "RunQuest — Convierte tu carrera en un videojuego" },
-      { name: "description", content: "Corre, gana XP, sube de nivel y completa misiones. RunQuest convierte cada carrera en una aventura." },
-      { property: "og:title", content: "RunQuest — Convierte tu carrera en un videojuego" },
-      { property: "og:description", content: "Corre, gana XP, sube de nivel y completa misiones. RunQuest convierte cada carrera en una aventura." },
+      { title: "RunQuest — Turn your run into a game" },
+      { name: "description", content: "Run, earn XP, level up, and complete quests. RunQuest turns every run into an adventure." },
+      { property: "og:title", content: "RunQuest — Turn your run into a game" },
+      { property: "og:description", content: "Run, earn XP, level up, and complete quests. RunQuest turns every run into an adventure." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -97,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700&display=swap",
       },
     ],
   }),
@@ -109,7 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="es">
+    <html lang="en">
       <head>
         <HeadContent />
       </head>

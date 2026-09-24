@@ -65,7 +65,7 @@ export default function ChestMap({
     });
     if (me) {
       Lf.circleMarker([me.lat, me.lng], { radius: 8, color: "#fff", weight: 3, fillColor: "#39ff88", fillOpacity: 1 })
-        .bindTooltip("Tú")
+        .bindTooltip("You")
         .addTo(layer);
     }
   };

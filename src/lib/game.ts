@@ -41,7 +41,7 @@ export const initials = (name: string) =>
 
 export function errMsg(e: unknown) {
   if (e && typeof e === "object" && "message" in e) return String((e as { message: string }).message);
-  return "Algo ha fallado";
+  return "Something went wrong";
 }
 
 export function useUser() {
@@ -96,7 +96,7 @@ export async function syncMissions(qc: QueryClient) {
   const { data, error } = await supabase.rpc("sync_missions");
   if (error) return;
   const newly = (data ?? []) as { title: string; xp: number }[];
-  for (const m of newly) toast.success(`✅ Misión cumplida: ${m.title} · +${m.xp} XP`);
+  for (const m of newly) toast.success(`✅ Quest complete: ${m.title} · +${m.xp} XP`);
   if (newly.length) {
     qc.invalidateQueries({ queryKey: ["missions"] });
     qc.invalidateQueries({ queryKey: ["profile"] });
@@ -153,7 +153,7 @@ export function useRunTracker() {
       setGpsError(null);
       setRunning(true);
       if (!("geolocation" in navigator)) {
-        setGpsError("Tu dispositivo no permite ubicación");
+        setGpsError("Your device does not support location services");
         setRunning(false);
         return;
       }
@@ -175,7 +175,7 @@ export function useRunTracker() {
           }
           lastRef.current = next;
         },
-        (e) => setGpsError(e.message || "No se pudo obtener la ubicación"),
+        (e) => setGpsError(e.message || "Your location could not be accessed"),
         { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 },
       );
     },

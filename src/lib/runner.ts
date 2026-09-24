@@ -30,6 +30,6 @@ export function weekly(p: P) {
   const runs = p.week_key === wk ? (p.week_runs ?? 0) : 0;
   const alive = p.last_done_week === wk || p.last_done_week === prevWk;
   const streak = alive ? (p.weekly_streak ?? 0) : 0;
-  const tier = streak >= 8 ? "Imparable" : streak >= 4 ? "Constante" : streak >= 2 ? "Regular" : streak >= 1 ? "En marcha" : "Sin empezar";
+  const tier = streak >= 8 ? "Unstoppable" : streak >= 4 ? "Consistent" : streak >= 2 ? "Regular" : streak >= 1 ? "On the move" : "Not started";
   return { runs, streak, best: p.best_weekly_streak ?? 0, done: p.last_done_week === wk, tier };
 }

@@ -11,10 +11,10 @@ export function GlobalStreakCard({ p, link = true }: { p: P; link?: boolean }) {
   const R = 52;
   const C = 2 * Math.PI * R;
   const parts = [
-    { icon: RouteIcon, label: "Distancia", v: p.dist_streak, tone: "text-primary" },
-    { icon: Mountain, label: "Altura", v: p.elev_streak, tone: "text-xp" },
-    { icon: Bomb, label: "Velocidad", v: p.speed_streak, tone: "text-accent" },
-    { icon: CalendarCheck, label: "Consistencia", v: w.streak, tone: "text-accent" },
+    { icon: RouteIcon, label: "Distance", v: p.dist_streak, tone: "text-primary" },
+    { icon: Mountain, label: "Elevation", v: p.elev_streak, tone: "text-xp" },
+    { icon: Bomb, label: "Speed", v: p.speed_streak, tone: "text-accent" },
+    { icon: CalendarCheck, label: "Consistency", v: w.streak, tone: "text-accent" },
   ];
   const body = (
     <section className="flex items-center gap-4 rounded-2xl border border-primary/40 bg-primary/10 p-4 card-glow">
@@ -27,7 +27,7 @@ export function GlobalStreakCard({ p, link = true }: { p: P; link?: boolean }) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="font-display text-4xl leading-none text-primary text-glow">x{g.toFixed(1)}</span>
-          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Racha global</span>
+          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Global streak</span>
         </div>
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
@@ -38,7 +38,7 @@ export function GlobalStreakCard({ p, link = true }: { p: P; link?: boolean }) {
           </div>
         ))}
         <p className="text-[10px] text-muted-foreground">
-          {w.done ? "✅ Semana cumplida" : `${Math.min(w.runs, RUNS_PER_WEEK)}/${RUNS_PER_WEEK} carreras esta semana`} · anillo: progreso al siguiente nivel
+          {w.done ? "✅ Weekly goal complete" : `${Math.min(w.runs, RUNS_PER_WEEK)}/${RUNS_PER_WEEK} runs this week`} · ring: progress to next level
         </p>
       </div>
     </section>

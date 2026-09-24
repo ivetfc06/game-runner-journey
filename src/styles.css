@@ -32,33 +32,33 @@
   --color-ring: var(--ring);
   --color-xp: var(--xp);
   --color-stamina: var(--stamina);
-  --font-display: "Bebas Neue", sans-serif;
-  --font-sans: "Barlow", sans-serif;
+  --font-display: "Sora", sans-serif;
+  --font-sans: "Manrope", sans-serif;
 }
 
 :root {
   --radius: 1rem;
-  --background: oklch(0.17 0.045 142);
-  --foreground: oklch(0.96 0.025 96);
-  --card: oklch(0.225 0.06 143);
-  --card-foreground: oklch(0.96 0.025 96);
-  --popover: oklch(0.225 0.06 143);
-  --popover-foreground: oklch(0.96 0.025 96);
-  --primary: oklch(0.82 0.22 139);
-  --primary-foreground: oklch(0.17 0.045 142);
-  --secondary: oklch(0.29 0.075 145);
-  --secondary-foreground: oklch(0.96 0.025 96);
-  --muted: oklch(0.28 0.055 139);
-  --muted-foreground: oklch(0.75 0.055 105);
-  --accent: oklch(0.87 0.185 91);
-  --accent-foreground: oklch(0.2 0.055 85);
-  --destructive: oklch(0.66 0.22 29);
-  --destructive-foreground: oklch(0.98 0.01 90);
-  --border: oklch(0.36 0.085 141);
-  --input: oklch(0.36 0.085 141);
-  --ring: oklch(0.87 0.185 91);
-  --xp: oklch(0.87 0.185 91);
-  --stamina: oklch(0.9 0.2 103);
+  --background: oklch(0.9 0.055 139);
+  --foreground: oklch(0.23 0.055 139);
+  --card: oklch(0.96 0.025 122);
+  --card-foreground: oklch(0.23 0.055 139);
+  --popover: oklch(0.97 0.02 112);
+  --popover-foreground: oklch(0.23 0.055 139);
+  --primary: oklch(0.48 0.145 143);
+  --primary-foreground: oklch(0.98 0.015 110);
+  --secondary: oklch(0.84 0.075 139);
+  --secondary-foreground: oklch(0.25 0.06 140);
+  --muted: oklch(0.87 0.045 116);
+  --muted-foreground: oklch(0.45 0.045 105);
+  --accent: oklch(0.7 0.13 78);
+  --accent-foreground: oklch(0.25 0.05 72);
+  --destructive: oklch(0.57 0.17 28);
+  --destructive-foreground: oklch(0.98 0.015 95);
+  --border: oklch(0.72 0.07 133);
+  --input: oklch(0.72 0.07 133);
+  --ring: oklch(0.48 0.145 143);
+  --xp: oklch(0.65 0.145 83);
+  --stamina: oklch(0.58 0.14 151);
 }
 
 @layer base {
@@ -75,7 +75,7 @@
 
 @utility font-display {
   font-family: var(--font-display);
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 
 @utility text-glow {
