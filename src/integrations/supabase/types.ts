@@ -125,6 +125,30 @@ export type Database = {
           },
         ]
       }
+      missions: {
+        Row: {
+          description: string
+          id: string
+          sort: number
+          title: string
+          xp_reward: number
+        }
+        Insert: {
+          description: string
+          id: string
+          sort?: number
+          title: string
+          xp_reward: number
+        }
+        Update: {
+          description?: string
+          id?: string
+          sort?: number
+          title?: string
+          xp_reward?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           coins: number
@@ -132,8 +156,11 @@ export type Database = {
           display_name: string
           id: string
           last_run_date: string | null
+          last_run_finished_at: string | null
           streak: number
           streak_freezes: number
+          today_km: number
+          today_km_on: string | null
           total_km: number
           username: string
           xp: number
@@ -145,8 +172,11 @@ export type Database = {
           display_name: string
           id: string
           last_run_date?: string | null
+          last_run_finished_at?: string | null
           streak?: number
           streak_freezes?: number
+          today_km?: number
+          today_km_on?: string | null
           total_km?: number
           username: string
           xp?: number
@@ -158,8 +188,11 @@ export type Database = {
           display_name?: string
           id?: string
           last_run_date?: string | null
+          last_run_finished_at?: string | null
           streak?: number
           streak_freezes?: number
+          today_km?: number
+          today_km_on?: string | null
           total_km?: number
           username?: string
           xp?: number
@@ -270,6 +303,38 @@ export type Database = {
           },
         ]
       }
+      user_missions: {
+        Row: {
+          completed_at: string
+          day: string
+          id: string
+          mission_id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          day?: string
+          id?: string
+          mission_id: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          day?: string
+          id?: string
+          mission_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_missions_mission_id_fkey"
+            columns: ["mission_id"]
+            isOneToOne: false
+            referencedRelation: "missions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
@@ -330,6 +395,7 @@ export type Database = {
         Args: { _race: string; _winner: string }
         Returns: undefined
       }
+      sync_missions: { Args: never; Returns: Json }
       update_race_progress: {
         Args: { _km: number; _race: string; _seconds: number }
         Returns: Json
